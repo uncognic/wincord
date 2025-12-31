@@ -20,6 +20,7 @@ It supports Windows 8 to Windows 11.
 - Show sender username with messages
 - List servers and allow switching between them
 ### Planned features
+- Direct messages
 - Windows 7/Vista support
 - Slowmode support (you can still chat in slowmodded channels, your messages just won't send if you send too fast)
 - Mentions (@username) highlighting
