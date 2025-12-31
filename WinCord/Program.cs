@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication.ExtendedProtection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,7 +17,24 @@ namespace WinCord
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            string token = null;
+            string channel = null;
+
+            using (var login = new LoginForm())
+            {
+                if (login.ShowDialog() == DialogResult.OK)
+                {
+                    token = login.Tag?.ToString();
+                    channel = login.ChannelId?.ToString();
+                }
+                else
+                {
+                    return;
+                }
+            }
+            Application.Run(new MainForm(token, channel));
+
         }
     }
 }

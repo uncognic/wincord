@@ -1,0 +1,34 @@
+﻿using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+
+namespace WinCord
+{
+    class DiscordClient
+    {
+        private readonly HttpClient _http;
+
+        public DiscordClient(string token)
+        {
+            _http = new HttpClient();
+            _http.DefaultRequestHeaders.Add("Authorization", token);
+            _http.DefaultRequestHeaders.Add("User-Agent", "Wincord");
+        }
+
+        public async Task SendMessage(string channelId, string content)
+        {
+            var payload = new { content };
+            string json = JsonConvert.SerializeObject(payload);
+
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _http.PostAsync(
+                $"https://discord.com/api/v9/channels/{channelId}/messages",
+                data
+            );
+
+            response.EnsureSuccessStatusCode();
+        }
+    }
+}
