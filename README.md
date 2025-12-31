@@ -31,7 +31,7 @@ It supports any version of Windows that supports .NET 4.8 (7 to 11). .NET 4.8 ca
 
 # Screenshots
 <p float="left">
-  <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/login.png" width="1000" />
+  <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/login.png" width="200" />
 </p>
 
 <p float="left">
