@@ -93,7 +93,8 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "WinCord";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);

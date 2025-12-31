@@ -67,7 +67,7 @@
             this.Controls.Add(this.loginButton);
             this.Controls.Add(this.textBoxToken);
             this.Name = "LoginForm";
-            this.Text = "Form2";
+            this.Text = "Login";
             this.ResumeLayout(false);
             this.PerformLayout();
 

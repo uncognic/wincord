@@ -1,3 +1,9 @@
 <Solution>
-  <Project Path="WinCord/WinCord.csproj" Id="831f2835-c655-474e-8b6c-e561b8e66e53" />
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="WinCord/WinCord.csproj" Id="831f2835-c655-474e-8b6c-e561b8e66e53">
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
 </Solution>

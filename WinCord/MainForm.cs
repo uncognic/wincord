@@ -44,7 +44,6 @@ namespace WinCord
             try
             {
                 await _discord.SendMessage(_currentChannelId, message);
-                AddMessage("You", message);
             }
             catch (Exception ex)
             {
@@ -112,6 +111,11 @@ namespace WinCord
                     }
                 }
             });
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
