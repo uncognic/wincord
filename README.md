@@ -20,6 +20,7 @@ It supports Windows 8 to Windows 11.
 - Show sender username with messages
 - Window title updates with logged-in username
 ### Planned features
+- Windows 7/Vista support
 - Multiple guild switching
 - Slowmode support (you can still chat in slowmodded channels, your messages just won't send if you send too fast)
 - Mentions (@username) highlighting
