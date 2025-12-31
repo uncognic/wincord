@@ -65,6 +65,7 @@ namespace WinCord
         {
             _ = SendMessage();
         }
+        private int? _lastSequence = null;
         private async void StartWebSocket(string token)
         {
             _ws = new ClientWebSocket();
@@ -89,7 +90,9 @@ namespace WinCord
 
             _ = Task.Run(async () =>
             {
-                var buffer = new byte[4096];
+                var buffer = new byte[8192];
+                int heartbeatInterval = 0;
+
                 while (_ws.State == WebSocketState.Open)
                 {
                     var result = await _ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
@@ -99,12 +102,25 @@ namespace WinCord
                         try
                         {
                             var obj = JObject.Parse(msg);
+            
+                            if (obj["s"] != null)
+                                _lastSequence = (int?)obj["s"];
+
+                            if (obj["op"] != null && (int)obj["op"] == 10)
+                            {
+                                heartbeatInterval = (int)obj["d"]["heartbeat_interval"];
+                                _ = StartHeartbeat(heartbeatInterval);
+                            }
+
                             if (obj["t"] != null && obj["t"].ToString() == "MESSAGE_CREATE")
                             {
-                                var author = obj["d"]["author"]["username"].ToString();
-                                var content = obj["d"]["content"].ToString();
-                                if (obj["d"]["channel_id"].ToString() == _currentChannelId)
+                                var channelId = obj["d"]["channel_id"].ToString();
+                                if (channelId == _currentChannelId)
+                                {
+                                    var author = obj["d"]["author"]["username"].ToString();
+                                    var content = obj["d"]["content"].ToString();
                                     AddMessage(author, content);
+                                }
                             }
                         }
                         catch { }
@@ -112,7 +128,23 @@ namespace WinCord
                 }
             });
         }
+        private async Task StartHeartbeat(int interval)
+        {
+            while (_ws.State == WebSocketState.Open)
+            {
+                var heartbeat = new { op = 1, d = _lastSequence };
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(heartbeat);
+                var bytes = Encoding.UTF8.GetBytes(json);
 
+                try
+                {
+                    await _ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
+                }
+                catch { /* ignore send errors for now */ }
+
+                await Task.Delay(interval);
+            }
+        }
         private void MainForm_Load(object sender, EventArgs e)
         {
 
