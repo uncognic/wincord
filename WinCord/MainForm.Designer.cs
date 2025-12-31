@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.listBoxGuilds = new System.Windows.Forms.ListBox();
             this.listBoxChannels = new System.Windows.Forms.ListBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -38,7 +39,7 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.Quit = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.listBoxGuilds = new System.Windows.Forms.ListBox();
+            this.LogOut = new System.Windows.Forms.ToolStripButton();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -53,6 +54,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(289, 644);
             this.panel1.TabIndex = 0;
+            // 
+            // listBoxGuilds
+            // 
+            this.listBoxGuilds.Dock = System.Windows.Forms.DockStyle.Left;
+            this.listBoxGuilds.FormattingEnabled = true;
+            this.listBoxGuilds.Location = new System.Drawing.Point(0, 0);
+            this.listBoxGuilds.Name = "listBoxGuilds";
+            this.listBoxGuilds.Size = new System.Drawing.Size(150, 644);
+            this.listBoxGuilds.Sorted = true;
+            this.listBoxGuilds.TabIndex = 1;
+            this.listBoxGuilds.SelectedIndexChanged += new System.EventHandler(this.listBoxGuilds_SelectedIndexChanged);
             // 
             // listBoxChannels
             // 
@@ -110,7 +122,8 @@
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Quit,
-            this.toolStripButton2});
+            this.toolStripButton2,
+            this.LogOut});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1242, 25);
@@ -137,16 +150,15 @@
             this.toolStripButton2.Text = "About";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
-            // listBoxGuilds
+            // LogOut
             // 
-            this.listBoxGuilds.Dock = System.Windows.Forms.DockStyle.Left;
-            this.listBoxGuilds.FormattingEnabled = true;
-            this.listBoxGuilds.Location = new System.Drawing.Point(0, 0);
-            this.listBoxGuilds.Name = "listBoxGuilds";
-            this.listBoxGuilds.Size = new System.Drawing.Size(150, 644);
-            this.listBoxGuilds.Sorted = true;
-            this.listBoxGuilds.TabIndex = 1;
-            this.listBoxGuilds.SelectedIndexChanged += new System.EventHandler(this.listBoxGuilds_SelectedIndexChanged);
+            this.LogOut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.LogOut.Image = ((System.Drawing.Image)(resources.GetObject("LogOut.Image")));
+            this.LogOut.ImageTransparentColor = System.Drawing.Color.LightYellow;
+            this.LogOut.Name = "LogOut";
+            this.LogOut.Size = new System.Drawing.Size(52, 22);
+            this.LogOut.Text = "Log out";
+            this.LogOut.Click += new System.EventHandler(this.LogOut_Click);
             // 
             // MainForm
             // 
@@ -182,6 +194,7 @@
         private System.Windows.Forms.ToolStripButton Quit;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ListBox listBoxGuilds;
+        private System.Windows.Forms.ToolStripButton LogOut;
     }
 }
 

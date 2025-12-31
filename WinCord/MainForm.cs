@@ -185,6 +185,7 @@ namespace WinCord
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            
             _ = PopulateGuilds();
         }
 
@@ -268,6 +269,12 @@ namespace WinCord
                 await PopulateChannels(_guildId);
                 chatBox.Clear();
             }
+        }
+
+        private void LogOut_Click(object sender, EventArgs e)
+        {
+            TokenStorage.DeleteToken();
+            Application.Restart();
         }
     }
 }

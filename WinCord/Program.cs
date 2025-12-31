@@ -18,19 +18,23 @@ namespace WinCord
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            string token = null;
+            string token = TokenStorage.LoadToken();
 
-            using (var login = new LoginForm())
+            if (string.IsNullOrEmpty(token))
             {
-                if (login.ShowDialog() == DialogResult.OK)
+                using (var login = new LoginForm())
                 {
-                    token = login.Tag?.ToString();
-                }
-                else
-                {
-                    return;
+                    if (login.ShowDialog() == DialogResult.OK)
+                    {
+                        token = login.Tag?.ToString();
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
             }
+            
             Application.Run(new MainForm(token));
 
         }
