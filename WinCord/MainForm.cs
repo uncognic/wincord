@@ -277,6 +277,41 @@ namespace WinCord
             Application.Restart();
         }
 
-        
+        private void toolStripButton1_Click_1(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(chatBox.Text))
+            {
+                MessageBox.Show("No chat messages to export.", "Export Chat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            using (var saveDialog = new SaveFileDialog())
+            {
+                saveDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                saveDialog.DefaultExt = "txt";
+
+                string channelName = "Chat";
+                if (listBoxChannels.SelectedItem is ChannelItem selectedChannel)
+                {
+                    channelName = selectedChannel.Name;
+                }
+
+                string safeChannelName = string.Join("_", channelName.Split(Path.GetInvalidFileNameChars()));
+                saveDialog.FileName = $"WinCord_{safeChannelName}_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+                saveDialog.Title = "Export Chat to File";
+
+                if (saveDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        File.WriteAllText(saveDialog.FileName, chatBox.Text);
+                        MessageBox.Show($"Chat exported successfully to:\n{saveDialog.FileName}", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Failed to export chat:\n{ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
     }
 }

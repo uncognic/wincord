@@ -43,6 +43,7 @@
             this.Quit = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.LogOut = new System.Windows.Forms.ToolStripButton();
+            this.exportButton = new System.Windows.Forms.ToolStripButton();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -126,7 +127,8 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Quit,
             this.toolStripButton2,
-            this.LogOut});
+            this.LogOut,
+            this.exportButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1242, 25);
@@ -163,6 +165,16 @@
             this.LogOut.Text = "Log out";
             this.LogOut.Click += new System.EventHandler(this.LogOut_Click);
             // 
+            // exportButton
+            // 
+            this.exportButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.exportButton.Image = ((System.Drawing.Image)(resources.GetObject("exportButton.Image")));
+            this.exportButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.exportButton.Name = "exportButton";
+            this.exportButton.Size = new System.Drawing.Size(70, 22);
+            this.exportButton.Text = "Export chat";
+            this.exportButton.Click += new System.EventHandler(this.toolStripButton1_Click_1);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -198,6 +210,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ListBox listBoxGuilds;
         private System.Windows.Forms.ToolStripButton LogOut;
+        private System.Windows.Forms.ToolStripButton exportButton;
     }
 }
 
