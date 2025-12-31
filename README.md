@@ -19,6 +19,7 @@ It supports Windows 8 to Windows 11, and Linux with Wine.
 - Display message timestamps
 - Show sender username with messages
 - List servers and allow switching between them
+- Securely save token in Windows Credential Manager and auto login
 ### Planned features
 - Direct messages
 - Windows 7/Vista support
