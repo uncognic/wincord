@@ -30,7 +30,6 @@
         {
             this.textBoxToken = new System.Windows.Forms.TextBox();
             this.loginButton = new System.Windows.Forms.Button();
-            this.guildIdBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -44,20 +43,13 @@
             // 
             // loginButton
             // 
-            this.loginButton.Location = new System.Drawing.Point(62, 127);
+            this.loginButton.Location = new System.Drawing.Point(65, 81);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(75, 23);
             this.loginButton.TabIndex = 1;
             this.loginButton.Text = "Login";
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
-            // 
-            // guildIdBox
-            // 
-            this.guildIdBox.Location = new System.Drawing.Point(50, 87);
-            this.guildIdBox.Name = "guildIdBox";
-            this.guildIdBox.Size = new System.Drawing.Size(100, 20);
-            this.guildIdBox.TabIndex = 2;
             // 
             // label1
             // 
@@ -72,9 +64,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(199, 175);
+            this.ClientSize = new System.Drawing.Size(199, 122);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.guildIdBox);
             this.Controls.Add(this.loginButton);
             this.Controls.Add(this.textBoxToken);
             this.Name = "LoginForm";
@@ -88,7 +79,6 @@
 
         private System.Windows.Forms.TextBox textBoxToken;
         private System.Windows.Forms.Button loginButton;
-        private System.Windows.Forms.TextBox guildIdBox;
         private System.Windows.Forms.Label label1;
     }
 }

@@ -22,7 +22,6 @@ namespace WinCord
         {
             InitializeComponent();
             SendMessage(textBoxToken.Handle, EM_SETCUEBANNER, 0, "Enter your token...");
-            SendMessage(guildIdBox.Handle, EM_SETCUEBANNER, 0, "Enter server ID...");
         }
 
         private void loginButton_Click(object sender, EventArgs e)
@@ -34,15 +33,7 @@ namespace WinCord
                 return;
             }
 
-            string guild = guildIdBox.Text.Trim();
-            if (string.IsNullOrEmpty(guild))
-            {
-                MessageBox.Show("Please enter a server ID.");
-                return;
-            }
-
             this.Tag = token; 
-            this.Guild = guild; 
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

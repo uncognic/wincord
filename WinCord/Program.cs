@@ -19,21 +19,19 @@ namespace WinCord
             Application.SetCompatibleTextRenderingDefault(false);
 
             string token = null;
-            string guild = null;
 
             using (var login = new LoginForm())
             {
                 if (login.ShowDialog() == DialogResult.OK)
                 {
                     token = login.Tag?.ToString();
-                    guild = login.Guild?.ToString();
                 }
                 else
                 {
                     return;
                 }
             }
-            Application.Run(new MainForm(token, guild));
+            Application.Run(new MainForm(token));
 
         }
     }

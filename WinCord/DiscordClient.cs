@@ -72,5 +72,18 @@ namespace WinCord
             public string id { get; set; }
             public string username { get; set; }
         }
+        public class Guild
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+        }
+        public async Task<List<Guild>> GetGuilds()
+        {
+            var response = await _http.GetAsync("https://discord.com/api/v9/users/@me/guilds");
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<Guild>>(json);
+        }
     }
 }

@@ -23,11 +23,10 @@ namespace WinCord
         private string _currentChannelId;
         private string _guildId;
         private ClientWebSocket _ws;
-        public MainForm(string token, string guild)
+        public MainForm(string token)
         {
             InitializeComponent();
             _discord = new DiscordClient(token);
-            _guildId = guild;
             _currentChannelId = null;
             StartWebSocket(token);
 
@@ -176,10 +175,17 @@ namespace WinCord
             public string Name { get; set; }
             public override string ToString() => Name;
         }
-        
+        public class GuildItem
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+            public override string ToString() => Name;
+        }
+
+
         private void MainForm_Load(object sender, EventArgs e)
         {
-            _ = PopulateChannels(_guildId);
+            _ = PopulateGuilds();
         }
 
         private async void listBoxChannels_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -209,7 +215,20 @@ namespace WinCord
                 MessageBox.Show($"Failed to load messages: {ex.Message}");
             }
         }
+        private async Task PopulateGuilds()
+        {
+            var guilds = await _discord.GetGuilds();
 
+            listBoxGuilds.Items.Clear();
+            foreach (var g in guilds)
+            {
+                listBoxGuilds.Items.Add(new GuildItem
+                {
+                    Id = g.id,
+                    Name = g.name
+                });
+            }
+        }
         private void chatBox_TextChanged(object sender, EventArgs e)
         {
 
@@ -239,6 +258,16 @@ namespace WinCord
             {
                 this.Text = $"WinCord — {username}";
             }));
+        }
+
+        private async void listBoxGuilds_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBoxGuilds.SelectedItem is GuildItem guild)
+            {
+                _guildId = guild.Id;
+                await PopulateChannels(_guildId);
+                chatBox.Clear();
+            }
         }
     }
 }
