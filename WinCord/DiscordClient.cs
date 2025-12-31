@@ -1,7 +1,8 @@
-﻿using System.Net.Http;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace WinCord
 {
@@ -29,6 +30,22 @@ namespace WinCord
             );
 
             response.EnsureSuccessStatusCode();
+        }
+      
+
+        public async Task<List<Channel>> GetChannels(string guildId)
+        {
+            var response = await _http.GetAsync($"https://discord.com/api/v9/guilds/{guildId}/channels");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<Channel>>(json);
+        }
+
+        public class Channel
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public int type { get; set; }
         }
     }
 }

@@ -26,7 +26,7 @@ namespace WinCord
                 if (login.ShowDialog() == DialogResult.OK)
                 {
                     token = login.Tag?.ToString();
-                    channel = login.ChannelId?.ToString();
+                    channel = login.Guild?.ToString();
                 }
                 else
                 {

@@ -30,7 +30,7 @@
         {
             this.textBoxToken = new System.Windows.Forms.TextBox();
             this.loginButton = new System.Windows.Forms.Button();
-            this.channelIdBox = new System.Windows.Forms.TextBox();
+            this.guildIdBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBoxToken
@@ -51,19 +51,19 @@
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
-            // channelIdBox
+            // guildIdBox
             // 
-            this.channelIdBox.Location = new System.Drawing.Point(339, 175);
-            this.channelIdBox.Name = "channelIdBox";
-            this.channelIdBox.Size = new System.Drawing.Size(100, 20);
-            this.channelIdBox.TabIndex = 2;
+            this.guildIdBox.Location = new System.Drawing.Point(339, 175);
+            this.guildIdBox.Name = "guildIdBox";
+            this.guildIdBox.Size = new System.Drawing.Size(100, 20);
+            this.guildIdBox.TabIndex = 2;
             // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.channelIdBox);
+            this.Controls.Add(this.guildIdBox);
             this.Controls.Add(this.loginButton);
             this.Controls.Add(this.textBoxToken);
             this.Name = "LoginForm";
@@ -77,6 +77,6 @@
 
         private System.Windows.Forms.TextBox textBoxToken;
         private System.Windows.Forms.Button loginButton;
-        private System.Windows.Forms.TextBox channelIdBox;
+        private System.Windows.Forms.TextBox guildIdBox;
     }
 }

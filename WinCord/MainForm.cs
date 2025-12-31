@@ -18,13 +18,13 @@ namespace WinCord
     public partial class MainForm : Form
     {
         private DiscordClient _discord;
-        private string _currentChannelId; 
+        private string guildId; 
         private ClientWebSocket _ws;
-        public MainForm(string token, string channel)
+        public MainForm(string token, string guild)
         {
             InitializeComponent();
             _discord = new DiscordClient(token);
-            _currentChannelId = channel;
+            guildId = guild;
             StartWebSocket(token);
         }
 
@@ -43,7 +43,7 @@ namespace WinCord
 
             try
             {
-                await _discord.SendMessage(_currentChannelId, message);
+                await _discord.SendMessage(guildId, message);
             }
             catch (Exception ex)
             {
@@ -115,7 +115,7 @@ namespace WinCord
                             if (obj["t"] != null && obj["t"].ToString() == "MESSAGE_CREATE")
                             {
                                 var channelId = obj["d"]["channel_id"].ToString();
-                                if (channelId == _currentChannelId)
+                                if (channelId == guildId)
                                 {
                                     var author = obj["d"]["author"]["username"].ToString();
                                     var content = obj["d"]["content"].ToString();
@@ -140,14 +140,42 @@ namespace WinCord
                 {
                     await _ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
                 }
-                catch { /* ignore send errors for now */ }
+                catch {}
 
                 await Task.Delay(interval);
             }
         }
+        private async Task PopulateChannels(string guildId)
+        {
+            var channels = await _discord.GetChannels(guildId);
+
+            listBoxChannels.Items.Clear();
+
+            foreach (var c in channels.Where(c => c.type == 0))
+            {
+                listBoxChannels.Items.Add(new ChannelItem { Id = c.id, Name = c.name });
+            }
+        }
+
+        public class ChannelItem
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+            public override string ToString() => Name;
+        }
+        
         private void MainForm_Load(object sender, EventArgs e)
         {
+            _ = PopulateChannels(guildId);
+        }
 
+        private void listBoxChannels_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            if (listBoxChannels.SelectedItem is ChannelItem selected)
+            {
+                guildId = selected.Id;
+                chatBox.Clear();
+            }
         }
     }
 }

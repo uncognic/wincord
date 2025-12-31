@@ -29,23 +29,33 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.listBoxChannels = new System.Windows.Forms.ListBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.sendButton = new System.Windows.Forms.Button();
             this.chatBox = new System.Windows.Forms.RichTextBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.listBox1);
+            this.panel1.Controls.Add(this.listBoxChannels);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(200, 450);
             this.panel1.TabIndex = 0;
+            // 
+            // listBoxChannels
+            // 
+            this.listBoxChannels.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxChannels.FormattingEnabled = true;
+            this.listBoxChannels.Location = new System.Drawing.Point(0, 0);
+            this.listBoxChannels.Name = "listBoxChannels";
+            this.listBoxChannels.Size = new System.Drawing.Size(200, 450);
+            this.listBoxChannels.TabIndex = 0;
+            this.listBoxChannels.SelectedIndexChanged += new System.EventHandler(this.listBoxChannels_SelectedIndexChanged_1);
             // 
             // panel2
             // 
@@ -87,15 +97,6 @@
             this.chatBox.TabIndex = 2;
             this.chatBox.Text = "";
             // 
-            // listBox1
-            // 
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(0, 0);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(200, 450);
-            this.listBox1.TabIndex = 0;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -121,7 +122,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button sendButton;
         private System.Windows.Forms.RichTextBox chatBox;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox listBoxChannels;
     }
 }
 

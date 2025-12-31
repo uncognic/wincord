@@ -17,12 +17,12 @@ namespace WinCord
         private static extern Int32 SendMessage(IntPtr hWnd, int msg, int wParam, [MarshalAs(UnmanagedType.LPWStr)] string lParam);
 
         private const int EM_SETCUEBANNER = 0x1501;
-        public string ChannelId { get; private set; }
+        public string Guild { get; private set; }
         public LoginForm()
         {
             InitializeComponent();
             SendMessage(textBoxToken.Handle, EM_SETCUEBANNER, 0, "Enter your token...");
-            SendMessage(channelIdBox.Handle, EM_SETCUEBANNER, 0, "Enter channel ID...");
+            SendMessage(guildIdBox.Handle, EM_SETCUEBANNER, 0, "Enter server ID...");
         }
 
         private void loginButton_Click(object sender, EventArgs e)
@@ -33,14 +33,14 @@ namespace WinCord
                 MessageBox.Show("Please enter a token.");
                 return;
             }
-            string channel = channelIdBox.Text.Trim();
-            if (string.IsNullOrEmpty(channel))
+            string guild = guildIdBox.Text.Trim();
+            if (string.IsNullOrEmpty(guild))
             {
-                MessageBox.Show("Please enter a channel ID.");
+                MessageBox.Show("Please enter a server ID.");
                 return;
             }
             this.Tag = token;
-            this.ChannelId = channel;
+            this.Guild = guild;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
