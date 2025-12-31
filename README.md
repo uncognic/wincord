@@ -18,7 +18,6 @@ It supports Windows 8 to Windows 11.
 - Load recent message history
 - Display message timestamps
 - Show sender username with messages
-- Window title updates with logged-in username
 ### Planned features
 - Windows 7/Vista support
 - Multiple guild switching
