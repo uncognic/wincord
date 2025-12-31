@@ -276,5 +276,7 @@ namespace WinCord
             TokenStorage.DeleteToken();
             Application.Restart();
         }
+
+        
     }
 }

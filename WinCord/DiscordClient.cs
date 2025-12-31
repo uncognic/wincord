@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace WinCord
 {
-    class DiscordClient
+    class DiscordClient : IDisposable
     {
         private readonly HttpClient _http;
 
@@ -17,6 +17,11 @@ namespace WinCord
             _http = new HttpClient();
             _http.DefaultRequestHeaders.Add("Authorization", token);
             _http.DefaultRequestHeaders.Add("User-Agent", "Wincord");
+        }
+
+        public void Dispose()
+        {
+            _http?.Dispose();
         }
 
         public async Task SendMessage(string channelId, string content)
