@@ -18,19 +18,22 @@ namespace WinCord
     public partial class MainForm : Form
     {
         private DiscordClient _discord;
-        private string guildId; 
+        private string _currentChannelId;
+        private string _guildId;
         private ClientWebSocket _ws;
         public MainForm(string token, string guild)
         {
             InitializeComponent();
             _discord = new DiscordClient(token);
-            guildId = guild;
+            _guildId = guild;
+            _currentChannelId = null;
             StartWebSocket(token);
         }
 
-        private void AddMessage(string author, string content)
+        private void AddMessage(string author, string content, DateTime? timestamp = null)
         {
-            chatBox.AppendText($"{author}: {content}\n");
+            string time = (timestamp ?? DateTime.Now).ToString("yyyy-MM-dd HH:mm");
+            chatBox.AppendText($"[{time}] {author}: {content}\n");
         }
         private async Task SendMessage()
         {
@@ -40,10 +43,14 @@ namespace WinCord
                 return;
 
             textBox1.Clear();
-
+            if (string.IsNullOrEmpty(_currentChannelId))
+            {
+                MessageBox.Show("Please select a channel first.");
+                return;
+            }
             try
             {
-                await _discord.SendMessage(guildId, message);
+                await _discord.SendMessage(_currentChannelId, message);
             }
             catch (Exception ex)
             {
@@ -115,7 +122,7 @@ namespace WinCord
                             if (obj["t"] != null && obj["t"].ToString() == "MESSAGE_CREATE")
                             {
                                 var channelId = obj["d"]["channel_id"].ToString();
-                                if (channelId == guildId)
+                                if (channelId == _currentChannelId)
                                 {
                                     var author = obj["d"]["author"]["username"].ToString();
                                     var content = obj["d"]["content"].ToString();
@@ -166,16 +173,40 @@ namespace WinCord
         
         private void MainForm_Load(object sender, EventArgs e)
         {
-            _ = PopulateChannels(guildId);
+            _ = PopulateChannels(_guildId);
         }
 
-        private void listBoxChannels_SelectedIndexChanged_1(object sender, EventArgs e)
+        private async void listBoxChannels_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             if (listBoxChannels.SelectedItem is ChannelItem selected)
             {
-                guildId = selected.Id;
-                chatBox.Clear();
+                _currentChannelId = selected.Id;
+                await LoadMessages(_currentChannelId);
             }
+        }
+        private async Task LoadMessages(string channelId)
+        {
+            if (string.IsNullOrEmpty(channelId)) return;
+
+            chatBox.Clear();
+
+            try
+            {
+                var messages = await _discord.GetMessages(channelId, 50); 
+                foreach (var msg in messages.AsEnumerable().Reverse())
+                {
+                    AddMessage(msg.author.username, msg.content, msg.timestamp);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load messages: {ex.Message}");
+            }
+        }
+
+        private void chatBox_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

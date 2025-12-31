@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace WinCord
 {
@@ -46,6 +48,29 @@ namespace WinCord
             public string id { get; set; }
             public string name { get; set; }
             public int type { get; set; }
+        }
+        public async Task<List<Message>> GetMessages(string channelId, int limit = 50)
+        {
+            var response = await _http.GetAsync($"https://discord.com/api/v9/channels/{channelId}/messages?limit={limit}");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<Message>>(json);
+        }
+        public class Message
+        {
+            public string id { get; set; }
+            public Author author { get; set; }
+            public string content { get; set; }
+            [JsonProperty("timestamp")]
+            public string timestampRaw { get; set; }
+
+            [JsonIgnore]
+            public DateTime timestamp => DateTime.Parse(timestampRaw);
+        }
+        public class Author
+        {
+            public string id { get; set; }
+            public string username { get; set; }
         }
     }
 }

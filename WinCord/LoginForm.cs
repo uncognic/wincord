@@ -28,21 +28,24 @@ namespace WinCord
         private void loginButton_Click(object sender, EventArgs e)
         {
             string token = textBoxToken.Text.Trim();
-            if (string.IsNullOrEmpty(token) )
+            if (string.IsNullOrEmpty(token))
             {
                 MessageBox.Show("Please enter a token.");
                 return;
             }
+
             string guild = guildIdBox.Text.Trim();
             if (string.IsNullOrEmpty(guild))
             {
                 MessageBox.Show("Please enter a server ID.");
                 return;
             }
-            this.Tag = token;
-            this.Guild = guild;
+
+            this.Tag = token; 
+            this.Guild = guild; 
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
+
     }
 }
