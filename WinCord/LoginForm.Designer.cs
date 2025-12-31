@@ -31,11 +31,12 @@
             this.textBoxToken = new System.Windows.Forms.TextBox();
             this.loginButton = new System.Windows.Forms.Button();
             this.guildIdBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBoxToken
             // 
-            this.textBoxToken.Location = new System.Drawing.Point(339, 146);
+            this.textBoxToken.Location = new System.Drawing.Point(50, 45);
             this.textBoxToken.Name = "textBoxToken";
             this.textBoxToken.Size = new System.Drawing.Size(100, 20);
             this.textBoxToken.TabIndex = 0;
@@ -43,7 +44,7 @@
             // 
             // loginButton
             // 
-            this.loginButton.Location = new System.Drawing.Point(352, 201);
+            this.loginButton.Location = new System.Drawing.Point(62, 127);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(75, 23);
             this.loginButton.TabIndex = 1;
@@ -53,16 +54,26 @@
             // 
             // guildIdBox
             // 
-            this.guildIdBox.Location = new System.Drawing.Point(339, 175);
+            this.guildIdBox.Location = new System.Drawing.Point(50, 87);
             this.guildIdBox.Name = "guildIdBox";
             this.guildIdBox.Size = new System.Drawing.Size(100, 20);
             this.guildIdBox.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(50, 26);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(90, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Log in to Discord:";
             // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(199, 175);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.guildIdBox);
             this.Controls.Add(this.loginButton);
             this.Controls.Add(this.textBoxToken);
@@ -78,5 +89,6 @@
         private System.Windows.Forms.TextBox textBoxToken;
         private System.Windows.Forms.Button loginButton;
         private System.Windows.Forms.TextBox guildIdBox;
+        private System.Windows.Forms.Label label1;
     }
 }

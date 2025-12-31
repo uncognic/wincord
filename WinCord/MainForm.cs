@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
@@ -28,6 +30,7 @@ namespace WinCord
             _guildId = guild;
             _currentChannelId = null;
             StartWebSocket(token);
+
         }
 
         private void AddMessage(string author, string content, DateTime? timestamp = null)
@@ -130,7 +133,10 @@ namespace WinCord
                                 }
                             }
                         }
-                        catch { }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex);
+                        }
                     }
                 }
             });
@@ -207,6 +213,32 @@ namespace WinCord
         private void chatBox_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            using (var about = new AboutForm())
+            {
+                about.ShowDialog(this);
+            }
+        }
+        private void SetTitle(string username)
+        {
+            if (!IsHandleCreated)
+            {
+                this.HandleCreated += (_, __) => SetTitle(username);
+                return;
+            }
+
+            BeginInvoke(new Action(() =>
+            {
+                this.Text = $"WinCord — {username}";
+            }));
         }
     }
 }
