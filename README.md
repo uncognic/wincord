@@ -7,7 +7,7 @@ __        ___        ____              _
 ```
 # Overview
 WinCord is a small and lightweight Discord client written in .NET 4.8 WinForms and C#.\
-It supports Windows 7 to Windows 11. Vista can also work by installing .NET 4.8 with some workarounds.
+It supports Windows 8 to Windows 11.
 # Features
 ### Supported Features
 - User authentication via token
