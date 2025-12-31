@@ -33,11 +33,14 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.sendButton = new System.Windows.Forms.Button();
             this.chatBox = new System.Windows.Forms.RichTextBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.listBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -84,6 +87,15 @@
             this.chatBox.TabIndex = 2;
             this.chatBox.Text = "";
             // 
+            // listBox1
+            // 
+            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(0, 0);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(200, 450);
+            this.listBox1.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -95,6 +107,7 @@
             this.Name = "MainForm";
             this.Text = "WinCord";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
@@ -108,6 +121,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button sendButton;
         private System.Windows.Forms.RichTextBox chatBox;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }
 
