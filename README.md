@@ -21,6 +21,7 @@ It supports Windows 7 to Windows 11. Vista can also work by installing .NET 4.8 
 - Window title updates with logged-in username
 ### Planned features
 - Multiple guild switching
+- Slowmode support (you can still chat in slowmodded channels, your messages just won't send if you send too fast)
 - Mentions (@username) highlighting
 - Message editing / deletion
 - Attachments / images / embeds
