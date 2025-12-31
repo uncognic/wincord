@@ -34,8 +34,16 @@ namespace WinCord
 
         private void AddMessage(string author, string content, DateTime? timestamp = null)
         {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(() => AddMessage(author, content, timestamp)));
+                return;
+            }
+            
             string time = (timestamp ?? DateTime.Now).ToString("yyyy-MM-dd HH:mm");
             chatBox.AppendText($"[{time}] {author}: {content}\n");
+            chatBox.SelectionStart = chatBox.Text.Length;
+            chatBox.ScrollToCaret();
         }
         private async Task SendMessage()
         {
