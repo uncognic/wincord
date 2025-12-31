@@ -18,9 +18,9 @@ It supports Windows 8 to Windows 11.
 - Load recent message history
 - Display message timestamps
 - Show sender username with messages
+- List servers and allow switching between them
 ### Planned features
 - Windows 7/Vista support
-- Multiple guild switching
 - Slowmode support (you can still chat in slowmodded channels, your messages just won't send if you send too fast)
 - Mentions (@username) highlighting
 - Message editing / deletion
