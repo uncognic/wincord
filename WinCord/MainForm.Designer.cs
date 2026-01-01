@@ -15,8 +15,14 @@
         {
             if (disposing)
             {
+                _heartbeatCts?.Cancel();
+                _heartbeatCts?.Dispose();
                 _discord?.Dispose();
-                _ws?.Dispose();
+                if (_ws != null && _ws.IsAlive)
+                {
+                    _ws.Close();
+                }
+                
                 components?.Dispose();
             }
             base.Dispose(disposing);
