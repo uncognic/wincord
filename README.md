@@ -23,7 +23,6 @@ It supports Windows 7 to Windows 11, and unofficially Linux with Wine.
 - Export current chat log
 ### Planned features
 - Direct messages
-- Windows 7/Vista support
 - Slowmode support (you can still chat in slowmodded channels, your messages just won't send if you send too fast)
 - Mentions (@username) highlighting
 - Message editing / deletion
