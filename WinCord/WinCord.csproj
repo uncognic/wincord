@@ -122,6 +122,7 @@
       <DependentUpon>PreferencesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SimpleLogger.cs" />
+    <Compile Include="ThemeManager.cs" />
     <Compile Include="TokenStorage.cs" />
     <Compile Include="DiscordClient.cs" />
     <Compile Include="AboutForm.cs">

@@ -46,6 +46,8 @@ namespace WinCord
                 SimpleLogger.Log("Preferences loaded");
                 Debug.WriteLine("Preferences loaded");
 
+                ApplyTheme();
+
                 SimpleLogger.Log("Creating DiscordClient...");
                 Debug.WriteLine("Creating DiscordClient...");
                 _discord = new DiscordClient(token);
@@ -286,9 +288,9 @@ namespace WinCord
                             token = token,
                             properties = new
                             {
-                                os = "windows",
-                                browser = "wincord",
-                                device = "wincord"
+                                os = "Windows",
+                                browser = "Chrome",
+                                device = ""
                             },
                             presence = new
                             {
@@ -635,6 +637,12 @@ namespace WinCord
         private void nameLabel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void ApplyTheme()
+        {
+            var theme = _preferences.UseDarkMode ? ThemeManager.Theme.Dark : ThemeManager.Theme.Light;
+            ThemeManager.ApplyTheme(this, theme);
         }
     }
 }

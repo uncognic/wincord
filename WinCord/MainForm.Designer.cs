@@ -54,7 +54,6 @@
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpMenu = new System.Windows.Forms.ToolStripDropDownButton();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.connectionStatusLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.nicknameLabel = new System.Windows.Forms.Label();
@@ -67,6 +66,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.connectionStatusLabel);
             this.panel1.Controls.Add(this.usernameLabel);
             this.panel1.Controls.Add(this.nicknameLabel);
             this.panel1.Controls.Add(this.pictureBox1);
@@ -107,7 +107,7 @@
             this.panel2.Controls.Add(this.textBox1);
             this.panel2.Controls.Add(this.sendButton);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(289, 627);
+            this.panel2.Location = new System.Drawing.Point(289, 649);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(953, 20);
             this.panel2.TabIndex = 1;
@@ -140,7 +140,7 @@
             this.chatBox.Location = new System.Drawing.Point(289, 25);
             this.chatBox.Name = "chatBox";
             this.chatBox.ReadOnly = true;
-            this.chatBox.Size = new System.Drawing.Size(953, 602);
+            this.chatBox.Size = new System.Drawing.Size(953, 624);
             this.chatBox.TabIndex = 2;
             this.chatBox.Text = "";
             this.chatBox.TextChanged += new System.EventHandler(this.chatBox_TextChanged);
@@ -227,19 +227,11 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Location = new System.Drawing.Point(289, 647);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(953, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
             // connectionStatusLabel
             // 
             this.connectionStatusLabel.AutoSize = true;
             this.connectionStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.connectionStatusLabel.Location = new System.Drawing.Point(295, 650);
+            this.connectionStatusLabel.Location = new System.Drawing.Point(90, 620);
             this.connectionStatusLabel.Name = "connectionStatusLabel";
             this.connectionStatusLabel.Size = new System.Drawing.Size(41, 15);
             this.connectionStatusLabel.TabIndex = 4;
@@ -272,19 +264,17 @@
             this.usernameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.usernameLabel.Location = new System.Drawing.Point(90, 590);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(39, 15);
+            this.usernameLabel.Size = new System.Drawing.Size(63, 15);
             this.usernameLabel.TabIndex = 6;
-            this.usernameLabel.Text = "status";
+            this.usernameLabel.Text = "username";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1242, 669);
-            this.Controls.Add(this.connectionStatusLabel);
             this.Controls.Add(this.chatBox);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "MainForm";
@@ -312,7 +302,6 @@
         private System.Windows.Forms.ListBox listBoxChannels;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ListBox listBoxGuilds;
-        private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Label connectionStatusLabel;
         private System.Windows.Forms.ToolStripDropDownButton fileMenu;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;

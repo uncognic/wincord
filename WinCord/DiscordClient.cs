@@ -21,7 +21,7 @@ namespace WinCord
                     Timeout = TimeSpan.FromSeconds(30)
                 };
                 _http.DefaultRequestHeaders.Add("Authorization", token);
-                _http.DefaultRequestHeaders.Add("User-Agent", "Wincord");
+                _http.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36");
             }
             catch (Exception ex)
             {
@@ -105,6 +105,7 @@ namespace WinCord
             public string id { get; set; }
             public string name { get; set; }
             public int type { get; set; }
+
         }
         public async Task<List<Message>> GetMessages(string channelId, int limit = 50)
         {

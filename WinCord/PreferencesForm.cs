@@ -42,6 +42,14 @@ namespace WinCord
             {
                 radioButtonIRC.Checked = true;
             }
+            if (_preferences.UseDarkMode)
+            {
+                radioButton2.Checked = true;
+            }
+            else
+            {
+                radioButton1.Checked = true;
+            }
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
@@ -53,6 +61,14 @@ namespace WinCord
             else
             {
                 _preferences.ChatStyle = UserPreferences.MessageStyle.IRC;
+            }
+            if (radioButton2.Checked)
+            {
+                _preferences.UseDarkMode = true;
+            }
+            else
+            {
+                _preferences.UseDarkMode = false;
             }
 
             _preferences.Save();
@@ -67,6 +83,11 @@ namespace WinCord
         }
 
         private void radioButtonIRC_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
 
         }

@@ -13,6 +13,7 @@ namespace WinCord
         }
 
         public MessageStyle ChatStyle { get; set; } = MessageStyle.Spaced;
+        public bool UseDarkMode { get; set; } = false;
 
         private static readonly string PreferencesPath = Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory,
