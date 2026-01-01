@@ -80,24 +80,26 @@
             // 
             // listBoxGuilds
             // 
+            this.listBoxGuilds.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listBoxGuilds.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.listBoxGuilds.FormattingEnabled = true;
             this.listBoxGuilds.ItemHeight = 15;
             this.listBoxGuilds.Location = new System.Drawing.Point(0, 0);
             this.listBoxGuilds.Name = "listBoxGuilds";
-            this.listBoxGuilds.Size = new System.Drawing.Size(150, 559);
+            this.listBoxGuilds.Size = new System.Drawing.Size(150, 555);
             this.listBoxGuilds.Sorted = true;
             this.listBoxGuilds.TabIndex = 1;
             this.listBoxGuilds.SelectedIndexChanged += new System.EventHandler(this.listBoxGuilds_SelectedIndexChanged);
             // 
             // listBoxChannels
             // 
+            this.listBoxChannels.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listBoxChannels.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.listBoxChannels.FormattingEnabled = true;
             this.listBoxChannels.ItemHeight = 15;
             this.listBoxChannels.Location = new System.Drawing.Point(152, 0);
             this.listBoxChannels.Name = "listBoxChannels";
-            this.listBoxChannels.Size = new System.Drawing.Size(134, 559);
+            this.listBoxChannels.Size = new System.Drawing.Size(134, 555);
             this.listBoxChannels.Sorted = true;
             this.listBoxChannels.TabIndex = 0;
             this.listBoxChannels.SelectedIndexChanged += new System.EventHandler(this.listBoxChannels_SelectedIndexChanged_1);
@@ -135,6 +137,7 @@
             // 
             // chatBox
             // 
+            this.chatBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.chatBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chatBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.chatBox.Location = new System.Drawing.Point(289, 25);
@@ -147,12 +150,14 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileMenu,
             this.editMenu,
             this.helpMenu});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0);
             this.toolStrip1.Size = new System.Drawing.Size(1242, 25);
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
