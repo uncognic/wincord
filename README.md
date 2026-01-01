@@ -7,7 +7,7 @@ __        ___        ____              _
 ```
 # Overview
 WinCord is a small and lightweight Discord client written in .NET 4.8 WinForms and C#.\
-It supports Windows 8 to Windows 11, and unofficially Linux with Wine.
+It supports Windows 7 to Windows 11, and unofficially Linux with Wine.
 # Features
 ### Supported Features
 - User authentication via token
@@ -37,7 +37,14 @@ It supports Windows 8 to Windows 11, and unofficially Linux with Wine.
 <p float="left">
   <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/login.png" width="200" />
 </p>
+<p float="left">
+  <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/prefs.png" width="200" />
+</p>
 
 <p float="left">
   <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/message.png" width="1000" />
 </p>
+<p float="left">
+  <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/message.png" width="1000" />
+</p>
+
