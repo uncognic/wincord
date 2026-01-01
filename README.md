@@ -45,6 +45,6 @@ It supports Windows 7 to Windows 11, and unofficially Linux with Wine.
   <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/message.png" width="1000" />
 </p>
 <p float="left">
-  <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/message.png" width="1000" />
+  <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/w7.png" width="1000" />
 </p>
 
