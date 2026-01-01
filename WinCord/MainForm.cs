@@ -76,7 +76,7 @@ namespace WinCord
                 Debug.WriteLine("LoadUserInfo started");
                 var user = await _discord.GetCurrentUser();
                 SetTitle(user.username);
-                await UpdateUserProfile(user.username, user.id, user.avatar);
+                await UpdateUserProfile(user.username, user.id, user.avatar, user.global_name);
                 SimpleLogger.Log($"User info loaded: {user.username}");
                 Debug.WriteLine($"User info loaded: {user.username}");
             }
@@ -87,9 +87,18 @@ namespace WinCord
             }
         }
 
-        private async Task UpdateUserProfile(string username, string userId, string avatarHash)
+        private async Task UpdateUserProfile(string username, string userId, string avatarHash, string globalName)
         {
-            nameLabel.Text = username;
+            usernameLabel.Text = username;
+            
+            if (!string.IsNullOrEmpty(globalName))
+            {
+                nicknameLabel.Text = globalName;
+            }
+            else
+            {
+                nicknameLabel.Text = username;
+            }
 
             try
             {
@@ -619,6 +628,11 @@ namespace WinCord
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void nameLabel_Click(object sender, EventArgs e)
         {
 
         }

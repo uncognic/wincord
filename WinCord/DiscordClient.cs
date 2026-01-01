@@ -163,6 +163,7 @@ namespace WinCord
             public string username { get; set; }
             public string discriminator { get; set; }
             public string avatar { get; set; }
+            public string global_name { get; set; }
         }
         public async Task<System.Drawing.Image> GetUserAvatar(string userId, string avatarHash)
         {

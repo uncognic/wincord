@@ -57,8 +57,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.connectionStatusLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.nameLabel = new System.Windows.Forms.Label();
-            this.statusLabel = new System.Windows.Forms.Label();
+            this.nicknameLabel = new System.Windows.Forms.Label();
+            this.usernameLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -67,8 +67,8 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.statusLabel);
-            this.panel1.Controls.Add(this.nameLabel);
+            this.panel1.Controls.Add(this.usernameLabel);
+            this.panel1.Controls.Add(this.nicknameLabel);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.listBoxGuilds);
             this.panel1.Controls.Add(this.listBoxChannels);
@@ -255,25 +255,26 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // nameLabel
+            // nicknameLabel
             // 
-            this.nameLabel.AutoSize = true;
-            this.nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nameLabel.Location = new System.Drawing.Point(89, 570);
-            this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(88, 20);
-            this.nameLabel.TabIndex = 3;
-            this.nameLabel.Text = "username";
+            this.nicknameLabel.AutoSize = true;
+            this.nicknameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nicknameLabel.Location = new System.Drawing.Point(89, 570);
+            this.nicknameLabel.Name = "nicknameLabel";
+            this.nicknameLabel.Size = new System.Drawing.Size(85, 20);
+            this.nicknameLabel.TabIndex = 3;
+            this.nicknameLabel.Text = "nickname";
+            this.nicknameLabel.Click += new System.EventHandler(this.nameLabel_Click);
             // 
-            // statusLabel
+            // usernameLabel
             // 
-            this.statusLabel.AutoSize = true;
-            this.statusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.statusLabel.Location = new System.Drawing.Point(91, 590);
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(39, 15);
-            this.statusLabel.TabIndex = 5;
-            this.statusLabel.Text = "status";
+            this.usernameLabel.AutoSize = true;
+            this.usernameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.usernameLabel.Location = new System.Drawing.Point(90, 590);
+            this.usernameLabel.Name = "usernameLabel";
+            this.usernameLabel.Size = new System.Drawing.Size(39, 15);
+            this.usernameLabel.TabIndex = 6;
+            this.usernameLabel.Text = "status";
             // 
             // MainForm
             // 
@@ -321,9 +322,9 @@
         private System.Windows.Forms.ToolStripDropDownButton editMenu;
         private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportChatToolStripMenuItem;
-        private System.Windows.Forms.Label statusLabel;
-        private System.Windows.Forms.Label nameLabel;
+        private System.Windows.Forms.Label nicknameLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label usernameLabel;
     }
 }
 
