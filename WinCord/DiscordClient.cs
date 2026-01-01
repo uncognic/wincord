@@ -14,9 +14,21 @@ namespace WinCord
 
         public DiscordClient(string token)
         {
-            _http = new HttpClient();
-            _http.DefaultRequestHeaders.Add("Authorization", token);
-            _http.DefaultRequestHeaders.Add("User-Agent", "Wincord");
+            try
+            {
+                _http = new HttpClient
+                {
+                    Timeout = TimeSpan.FromSeconds(30)
+                };
+                _http.DefaultRequestHeaders.Add("Authorization", token);
+                _http.DefaultRequestHeaders.Add("User-Agent", "Wincord");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"HttpClient initialization failed: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+                throw;
+            }
         }
 
         public void Dispose()
@@ -28,15 +40,38 @@ namespace WinCord
         {
             var payload = new { content };
             string json = JsonConvert.SerializeObject(payload);
-
             var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _http.PostAsync(
-                $"https://discord.com/api/v9/channels/{channelId}/messages",
-                data
-            );
+            try
+            {
+                var response = await _http.PostAsync(
+                    $"https://discord.com/api/v9/channels/{channelId}/messages",
+                    data
+                );
 
-            response.EnsureSuccessStatusCode();
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Invalid token. Please log in again.");
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    throw new UnauthorizedAccessException("You don't have permission to send messages in this channel.");
+                }
+                else if (response.StatusCode == (System.Net.HttpStatusCode)429)
+                {
+                    throw new InvalidOperationException("Rate limited. Please wait before sending more messages.");
+                }
+
+                response.EnsureSuccessStatusCode();
+            }
+            catch (TaskCanceledException)
+            {
+                throw new TimeoutException("Request timed out. Check your internet connection.");
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new InvalidOperationException($"Network error: {ex.Message}", ex);
+            }
         }
       
 

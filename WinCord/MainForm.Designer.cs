@@ -46,10 +46,14 @@
             this.sendButton = new System.Windows.Forms.Button();
             this.chatBox = new System.Windows.Forms.RichTextBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.Quit = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.LogOut = new System.Windows.Forms.ToolStripButton();
-            this.exportButton = new System.Windows.Forms.ToolStripButton();
+            this.fileMenu = new System.Windows.Forms.ToolStripDropDownButton();
+            this.exportChatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editMenu = new System.Windows.Forms.ToolStripDropDownButton();
+            this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpMenu = new System.Windows.Forms.ToolStripDropDownButton();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.connectionStatusLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
@@ -133,55 +137,84 @@
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Quit,
-            this.toolStripButton2,
-            this.LogOut,
-            this.exportButton});
+            this.fileMenu,
+            this.editMenu,
+            this.helpMenu});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1242, 25);
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // Quit
+            // fileMenu
             // 
-            this.Quit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.Quit.Image = ((System.Drawing.Image)(resources.GetObject("Quit.Image")));
-            this.Quit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Quit.Name = "Quit";
-            this.Quit.Size = new System.Drawing.Size(34, 22);
-            this.Quit.Text = "Quit";
-            this.Quit.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.fileMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.fileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportChatToolStripMenuItem,
+            this.logOutToolStripMenuItem,
+            this.quitToolStripMenuItem});
+            this.fileMenu.Image = ((System.Drawing.Image)(resources.GetObject("fileMenu.Image")));
+            this.fileMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.fileMenu.Name = "fileMenu";
+            this.fileMenu.Size = new System.Drawing.Size(38, 22);
+            this.fileMenu.Text = "File";
             // 
-            // toolStripButton2
+            // exportChatToolStripMenuItem
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(44, 22);
-            this.toolStripButton2.Text = "About";
-            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            this.exportChatToolStripMenuItem.Name = "exportChatToolStripMenuItem";
+            this.exportChatToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportChatToolStripMenuItem.Text = "Export chat";
+            this.exportChatToolStripMenuItem.Click += new System.EventHandler(this.exportChatToolStripMenuItem_Click);
             // 
-            // LogOut
+            // logOutToolStripMenuItem
             // 
-            this.LogOut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.LogOut.Image = ((System.Drawing.Image)(resources.GetObject("LogOut.Image")));
-            this.LogOut.ImageTransparentColor = System.Drawing.Color.LightYellow;
-            this.LogOut.Name = "LogOut";
-            this.LogOut.Size = new System.Drawing.Size(52, 22);
-            this.LogOut.Text = "Log out";
-            this.LogOut.Click += new System.EventHandler(this.LogOut_Click);
+            this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
+            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.logOutToolStripMenuItem.Text = "Log out";
+            this.logOutToolStripMenuItem.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
             // 
-            // exportButton
+            // quitToolStripMenuItem
             // 
-            this.exportButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.exportButton.Image = ((System.Drawing.Image)(resources.GetObject("exportButton.Image")));
-            this.exportButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.exportButton.Name = "exportButton";
-            this.exportButton.Size = new System.Drawing.Size(70, 22);
-            this.exportButton.Text = "Export chat";
-            this.exportButton.Click += new System.EventHandler(this.toolStripButton1_Click_1);
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.quitToolStripMenuItem.Text = "Quit";
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
+            // 
+            // editMenu
+            // 
+            this.editMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.editMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.preferencesToolStripMenuItem});
+            this.editMenu.Image = ((System.Drawing.Image)(resources.GetObject("editMenu.Image")));
+            this.editMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.editMenu.Name = "editMenu";
+            this.editMenu.Size = new System.Drawing.Size(40, 22);
+            this.editMenu.Text = "Edit";
+            // 
+            // preferencesToolStripMenuItem
+            // 
+            this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.preferencesToolStripMenuItem.Text = "Preferences";
+            this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
+            // 
+            // helpMenu
+            // 
+            this.helpMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.helpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
+            this.helpMenu.Image = ((System.Drawing.Image)(resources.GetObject("helpMenu.Image")));
+            this.helpMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.helpMenu.Name = "helpMenu";
+            this.helpMenu.Size = new System.Drawing.Size(45, 22);
+            this.helpMenu.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -233,13 +266,17 @@
         private System.Windows.Forms.RichTextBox chatBox;
         private System.Windows.Forms.ListBox listBoxChannels;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton Quit;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ListBox listBoxGuilds;
-        private System.Windows.Forms.ToolStripButton LogOut;
-        private System.Windows.Forms.ToolStripButton exportButton;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Label connectionStatusLabel;
+        private System.Windows.Forms.ToolStripDropDownButton fileMenu;
+        private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem logOutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripDropDownButton helpMenu;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripDropDownButton editMenu;
+        private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportChatToolStripMenuItem;
     }
 }
 

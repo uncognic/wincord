@@ -25,27 +25,51 @@ namespace WinCord
         private string _token;
         private int? _lastSequence = null;
         private CancellationTokenSource _heartbeatCts;
+        private UserPreferences _preferences;
 
         public MainForm(string token)
         {
-            InitializeComponent();
-            _discord = new DiscordClient(token);
-            _token = token;
-            _currentChannelId = null;
-            StartWebSocket(token);
-            _ = LoadUserInfo();
+            try
+            {
+                SimpleLogger.Log("MainForm constructor started");
+                
+                SimpleLogger.Log("Calling InitializeComponent...");
+                InitializeComponent();
+                SimpleLogger.Log("InitializeComponent completed");
+                
+                SimpleLogger.Log("Loading preferences...");
+                _preferences = UserPreferences.Load();
+                SimpleLogger.Log("Preferences loaded");
+                
+                SimpleLogger.Log("Creating DiscordClient...");
+                _discord = new DiscordClient(token);
+                SimpleLogger.Log("DiscordClient created");
+                
+                _token = token;
+                _currentChannelId = null;
+                
+                SimpleLogger.Log("MainForm constructor completed");
+            }
+            catch (Exception ex)
+            {
+                SimpleLogger.Log($"ERROR in MainForm constructor: {ex.Message}");
+                SimpleLogger.Log($"Stack trace: {ex.StackTrace}");
+                throw;
+            }
         }
 
         private async Task LoadUserInfo()
         {
             try
             {
+                SimpleLogger.Log("LoadUserInfo started");
                 var user = await _discord.GetCurrentUser();
                 SetTitle(user.username);
+                SimpleLogger.Log($"User info loaded: {user.username}");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Failed to load user info: {ex.Message}");
+                SimpleLogger.Log($"Failed to load user info: {ex.Message}");
             }
         }
 
@@ -66,10 +90,20 @@ namespace WinCord
             {
                 BeginInvoke(new Action(() => AddMessage(author, content, timestamp)));
                 return;
-            }   
-            
-            string time = (timestamp ?? DateTime.Now).ToString("yyyy-MM-dd HH:mm:ss");
-            chatBox.AppendText($"[{time}]\n {author}: {content}\n\n");
+            }
+
+            string time = (timestamp ?? DateTime.Now).ToString("HH:mm:ss");
+
+            if (_preferences.ChatStyle == UserPreferences.MessageStyle.IRC)
+            {
+                chatBox.AppendText($"[{time}] {author}: {content}\n");
+            }
+            else
+            {
+
+                chatBox.AppendText($"[{time}]\n {author}: {content}\n\n");
+            }
+
             chatBox.SelectionStart = chatBox.Text.Length;
             chatBox.ScrollToCaret();
         }
@@ -140,11 +174,16 @@ namespace WinCord
         {
             try
             {
+                SimpleLogger.Log("StartWebSocket called");
                 UpdateConnectionStatus("Connecting...");
                 _ws = new WebSocket("wss://gateway.discord.gg/?v=9&encoding=json");
+                
+                SimpleLogger.Log("WebSocket object created");
+                _ws.WaitTime = TimeSpan.FromSeconds(10);
 
                 _ws.OnOpen += (sender, e) =>
                 {
+                    SimpleLogger.Log("WebSocket OnOpen event triggered");
                     UpdateConnectionStatus("Connected");
                     
                     var identify = new
@@ -197,31 +236,33 @@ namespace WinCord
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine($"JSON parse error: {ex.Message}");
+                        SimpleLogger.Log($"JSON parse error: {ex.Message}");
                     }
                 };
 
                 _ws.OnError += (sender, e) =>
                 {
-                    Debug.WriteLine($"WebSocket error: {e.Message}");
+                    SimpleLogger.Log($"WebSocket error: {e.Message}");
                     UpdateConnectionStatus($"Error: {e.Message}");
                 };
 
                 _ws.OnClose += (sender, e) =>
                 {
-                    Debug.WriteLine($"WebSocket closed: {e.Reason}");
+                    SimpleLogger.Log($"WebSocket closed: {e.Reason}");
                     UpdateConnectionStatus("Disconnected");
                     
                     _heartbeatCts?.Cancel();
                 };
 
-                _ws.Connect();
+                SimpleLogger.Log("Calling _ws.ConnectAsync()...");
+                _ws.ConnectAsync();
+                SimpleLogger.Log("ConnectAsync() returned");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"WebSocket connection error: {ex.Message}");
+                SimpleLogger.Log($"WebSocket connection error: {ex.Message}");
+                SimpleLogger.Log($"Stack trace: {ex.StackTrace}");
                 UpdateConnectionStatus($"Connection failed: {ex.Message}");
-                MessageBox.Show($"Failed to connect to Discord: {ex.Message}", "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -243,17 +284,15 @@ namespace WinCord
                         if (_ws.IsAlive)
                         {
                             _ws.Send(json);
-                            Debug.WriteLine($"Heartbeat sent (seq: {_lastSequence})");
                         }
                         else
                         {
-                            Debug.WriteLine("WebSocket not alive, stopping heartbeat");
                             break;
                         }
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine($"Heartbeat error: {ex.Message}");
+                        SimpleLogger.Log($"Heartbeat error: {ex.Message}");
                         UpdateConnectionStatus("Connection lost");
                         break;
                     }
@@ -263,23 +302,31 @@ namespace WinCord
             }
             catch (OperationCanceledException)
             {
-                Debug.WriteLine("Heartbeat cancelled");
+                SimpleLogger.Log("Heartbeat cancelled");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Heartbeat task error: {ex.Message}");
+                SimpleLogger.Log($"Heartbeat task error: {ex.Message}");
             }
         }
 
         private async Task PopulateChannels(string guildId)
         {
-            var channels = await _discord.GetChannels(guildId);
-
-            listBoxChannels.Items.Clear();
-
-            foreach (var c in channels.Where(c => c.type == 0))
+            try
             {
-                listBoxChannels.Items.Add(new ChannelItem { Id = c.id, Name = c.name });
+                var channels = await _discord.GetChannels(guildId);
+
+                listBoxChannels.Items.Clear();
+
+                foreach (var c in channels.Where(c => c.type == 0))
+                {
+                    listBoxChannels.Items.Add(new ChannelItem { Id = c.id, Name = c.name });
+                }
+            }
+            catch (Exception ex)
+            {
+                SimpleLogger.Log($"PopulateChannels error: {ex.Message}");
+                MessageBox.Show($"Failed to load channels: {ex.Message}");
             }
         }
 
@@ -299,8 +346,21 @@ namespace WinCord
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
-            _ = PopulateGuilds();
+            try
+            {
+                SimpleLogger.Log("MainForm_Load event started");
+                
+                _ = PopulateGuilds();
+                StartWebSocket(_token);
+                _ = LoadUserInfo();
+                
+                SimpleLogger.Log("MainForm_Load event completed");
+            }
+            catch (Exception ex)
+            {
+                SimpleLogger.Log($"MainForm_Load error: {ex.Message}");
+                MessageBox.Show($"Error during form load: {ex.Message}");
+            }
         }
 
         private async void listBoxChannels_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -332,34 +392,32 @@ namespace WinCord
         }
         private async Task PopulateGuilds()
         {
-            var guilds = await _discord.GetGuilds();
-
-            listBoxGuilds.Items.Clear();
-            foreach (var g in guilds)
+            try
             {
-                listBoxGuilds.Items.Add(new GuildItem
+                SimpleLogger.Log("PopulateGuilds started");
+                var guilds = await _discord.GetGuilds();
+                SimpleLogger.Log($"Got {guilds.Count} guilds");
+
+                listBoxGuilds.Items.Clear();
+                foreach (var g in guilds)
                 {
-                    Id = g.id,
-                    Name = g.name
-                });
+                    listBoxGuilds.Items.Add(new GuildItem
+                    {
+                        Id = g.id,
+                        Name = g.name
+                    });
+                }
+                SimpleLogger.Log("PopulateGuilds completed");
+            }
+            catch (Exception ex)
+            {
+                SimpleLogger.Log($"PopulateGuilds error: {ex.Message}");
+                MessageBox.Show($"Failed to load servers: {ex.Message}");
             }
         }
         private void chatBox_TextChanged(object sender, EventArgs e)
         {
 
-        }
-
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void toolStripButton2_Click(object sender, EventArgs e)
-        {
-            using (var about = new AboutForm())
-            {
-                about.ShowDialog(this);
-            }
         }
       
 
@@ -372,14 +430,28 @@ namespace WinCord
                 chatBox.Clear();
             }
         }
+      
 
-        private void LogOut_Click(object sender, EventArgs e)
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TokenStorage.DeleteToken();
             Application.Restart();
         }
 
-        private void toolStripButton1_Click_1(object sender, EventArgs e)
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var about = new AboutForm())
+            {
+                about.ShowDialog(this);
+            }
+        }
+
+        private void exportChatToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(chatBox.Text))
             {
@@ -412,6 +484,18 @@ namespace WinCord
                     {
                         MessageBox.Show($"Failed to export chat:\n{ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                }
+            }
+        }
+
+        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var preferencesForm = new PreferencesForm())
+            {
+                if (preferencesForm.ShowDialog(this) == DialogResult.OK)
+                {
+                    _preferences = UserPreferences.Load();
+                    MessageBox.Show("Preferences saved. Changes will apply to new messages.", "Preferences", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
