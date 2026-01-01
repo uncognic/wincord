@@ -107,15 +107,24 @@ namespace WinCord
 
             _ = Task.Run(async () =>
             {
-                var buffer = new byte[8192];
+                var buffer = new ArraySegment<byte>(new byte[8192]);
+                var ms = new MemoryStream();
                 int heartbeatInterval = 0;
 
                 while (_ws.State == WebSocketState.Open)
                 {
-                    var result = await _ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                    ms.SetLength(0);
+                    WebSocketReceiveResult result;
+                    
+                    do
+                    {
+                        result = await _ws.ReceiveAsync(buffer, CancellationToken.None);
+                        ms.Write(buffer.Array, buffer.Offset, result.Count);
+                    } while (!result.EndOfMessage);
+
                     if (result.MessageType == WebSocketMessageType.Text)
                     {
-                        var msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                        var msg = Encoding.UTF8.GetString(ms.ToArray());
                         try
                         {
                             var obj = JObject.Parse(msg);
