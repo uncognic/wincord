@@ -77,10 +77,27 @@ namespace WinCord
 
         public async Task<List<Channel>> GetChannels(string guildId)
         {
-            var response = await _http.GetAsync($"https://discord.com/api/v9/guilds/{guildId}/channels");
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<Channel>>(json);
+            try
+            {
+                var response = await _http.GetAsync($"https://discord.com/api/v9/guilds/{guildId}/channels");
+                
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Invalid token. Please log in again.");
+                }
+                
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<List<Channel>>(json);
+            }
+            catch (TaskCanceledException)
+            {
+                throw new TimeoutException("Request timed out.");
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new InvalidOperationException($"Network error: {ex.Message}", ex);
+            }
         }
 
         public class Channel
@@ -91,10 +108,25 @@ namespace WinCord
         }
         public async Task<List<Message>> GetMessages(string channelId, int limit = 50)
         {
-            var response = await _http.GetAsync($"https://discord.com/api/v9/channels/{channelId}/messages?limit={limit}");
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<Message>>(json);
+            try
+            {
+                var response = await _http.GetAsync($"https://discord.com/api/v9/channels/{channelId}/messages?limit={limit}");
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Invalid token. Please log in again.");
+                }
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<List<Message>>(json);
+            }
+            catch (TaskCanceledException)
+            {
+                throw new TimeoutException("Request timed out.");
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new InvalidOperationException($"Network error: {ex.Message}", ex);
+            }
         }
         public class Message
         {

@@ -28,7 +28,7 @@ namespace WinCord
 
         public static void Clear()
         {
-            if (!IsEnabled) return
+            if (!IsEnabled) return;
             
             try
             {

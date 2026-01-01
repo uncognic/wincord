@@ -32,28 +32,38 @@ namespace WinCord
             try
             {
                 SimpleLogger.Log("MainForm constructor started");
+                Debug.WriteLine("MainForm constructor started");
                 
                 SimpleLogger.Log("Calling InitializeComponent...");
+                Debug.WriteLine("Calling InitializeComponent...");
                 InitializeComponent();
                 SimpleLogger.Log("InitializeComponent completed");
+                Debug.WriteLine("InitializeComponent completed");
                 
                 SimpleLogger.Log("Loading preferences...");
+                Debug.WriteLine("Loading preferences...");
                 _preferences = UserPreferences.Load();
                 SimpleLogger.Log("Preferences loaded");
+                Debug.WriteLine("Preferences loaded");
                 
                 SimpleLogger.Log("Creating DiscordClient...");
+                Debug.WriteLine("Creating DiscordClient...");
                 _discord = new DiscordClient(token);
                 SimpleLogger.Log("DiscordClient created");
+                Debug.WriteLine("DiscordClient created");
                 
                 _token = token;
                 _currentChannelId = null;
                 
                 SimpleLogger.Log("MainForm constructor completed");
+                Debug.WriteLine("MainForm constructor completed");
             }
             catch (Exception ex)
             {
                 SimpleLogger.Log($"ERROR in MainForm constructor: {ex.Message}");
+                Debug.WriteLine($"ERROR in MainForm constructor: {ex.Message}");
                 SimpleLogger.Log($"Stack trace: {ex.StackTrace}");
+                Debug.WriteLine($"Stack trace: {ex.StackTrace}");
                 throw;
             }
         }
@@ -63,13 +73,16 @@ namespace WinCord
             try
             {
                 SimpleLogger.Log("LoadUserInfo started");
+                Debug.WriteLine("LoadUserInfo started");
                 var user = await _discord.GetCurrentUser();
                 SetTitle(user.username);
                 SimpleLogger.Log($"User info loaded: {user.username}");
+                Debug.WriteLine($"User info loaded: {user.username}");
             }
             catch (Exception ex)
             {
                 SimpleLogger.Log($"Failed to load user info: {ex.Message}");
+                Debug.WriteLine($"Failed to load user info: {ex.Message}");
             }
         }
 
@@ -100,7 +113,6 @@ namespace WinCord
             }
             else
             {
-
                 chatBox.AppendText($"[{time}]\n {author}: {content}\n\n");
             }
 
@@ -175,15 +187,18 @@ namespace WinCord
             try
             {
                 SimpleLogger.Log("StartWebSocket called");
+                Debug.WriteLine("StartWebSocket called");
                 UpdateConnectionStatus("Connecting...");
                 _ws = new WebSocket("wss://gateway.discord.gg/?v=9&encoding=json");
                 
                 SimpleLogger.Log("WebSocket object created");
+                Debug.WriteLine("WebSocket object created");
                 _ws.WaitTime = TimeSpan.FromSeconds(10);
 
                 _ws.OnOpen += (sender, e) =>
                 {
                     SimpleLogger.Log("WebSocket OnOpen event triggered");
+                    Debug.WriteLine("WebSocket OnOpen event triggered");
                     UpdateConnectionStatus("Connected");
                     
                     var identify = new
@@ -237,31 +252,38 @@ namespace WinCord
                     catch (Exception ex)
                     {
                         SimpleLogger.Log($"JSON parse error: {ex.Message}");
+                        Debug.WriteLine($"JSON parse error: {ex.Message}");
                     }
                 };
 
                 _ws.OnError += (sender, e) =>
                 {
                     SimpleLogger.Log($"WebSocket error: {e.Message}");
+                    Debug.WriteLine($"WebSocket error: {e.Message}");
                     UpdateConnectionStatus($"Error: {e.Message}");
                 };
 
                 _ws.OnClose += (sender, e) =>
                 {
                     SimpleLogger.Log($"WebSocket closed: {e.Reason}");
+                    Debug.WriteLine($"WebSocket closed: {e.Reason}");
                     UpdateConnectionStatus("Disconnected");
                     
                     _heartbeatCts?.Cancel();
                 };
 
                 SimpleLogger.Log("Calling _ws.ConnectAsync()...");
+                Debug.WriteLine("Calling _ws.ConnectAsync()...");
                 _ws.ConnectAsync();
                 SimpleLogger.Log("ConnectAsync() returned");
+                Debug.WriteLine("ConnectAsync() returned");
             }
             catch (Exception ex)
             {
                 SimpleLogger.Log($"WebSocket connection error: {ex.Message}");
+                Debug.WriteLine($"WebSocket connection error: {ex.Message}");
                 SimpleLogger.Log($"Stack trace: {ex.StackTrace}");
+                Debug.WriteLine($"Stack trace: {ex.StackTrace}");
                 UpdateConnectionStatus($"Connection failed: {ex.Message}");
             }
         }
@@ -293,6 +315,7 @@ namespace WinCord
                     catch (Exception ex)
                     {
                         SimpleLogger.Log($"Heartbeat error: {ex.Message}");
+                        Debug.WriteLine($"Heartbeat error: {ex.Message}");
                         UpdateConnectionStatus("Connection lost");
                         break;
                     }
@@ -303,10 +326,12 @@ namespace WinCord
             catch (OperationCanceledException)
             {
                 SimpleLogger.Log("Heartbeat cancelled");
+                Debug.WriteLine("Heartbeat cancelled");
             }
             catch (Exception ex)
             {
                 SimpleLogger.Log($"Heartbeat task error: {ex.Message}");
+                Debug.WriteLine($"Heartbeat task error: {ex.Message}");
             }
         }
 
@@ -326,6 +351,7 @@ namespace WinCord
             catch (Exception ex)
             {
                 SimpleLogger.Log($"PopulateChannels error: {ex.Message}");
+                Debug.WriteLine($"PopulateChannels error: {ex.Message}");
                 MessageBox.Show($"Failed to load channels: {ex.Message}");
             }
         }
@@ -349,16 +375,19 @@ namespace WinCord
             try
             {
                 SimpleLogger.Log("MainForm_Load event started");
+                Debug.WriteLine("MainForm_Load event started");
                 
                 _ = PopulateGuilds();
                 StartWebSocket(_token);
                 _ = LoadUserInfo();
                 
                 SimpleLogger.Log("MainForm_Load event completed");
+                Debug.WriteLine("MainForm_Load event completed");
             }
             catch (Exception ex)
             {
                 SimpleLogger.Log($"MainForm_Load error: {ex.Message}");
+                Debug.WriteLine($"MainForm_Load error: {ex.Message}");
                 MessageBox.Show($"Error during form load: {ex.Message}");
             }
         }
@@ -371,6 +400,7 @@ namespace WinCord
                 await LoadMessages(_currentChannelId);
             }
         }
+        
         private async Task LoadMessages(string channelId)
         {
             if (string.IsNullOrEmpty(channelId)) return;
@@ -390,13 +420,16 @@ namespace WinCord
                 MessageBox.Show($"Failed to load messages: {ex.Message}");
             }
         }
+        
         private async Task PopulateGuilds()
         {
             try
             {
                 SimpleLogger.Log("PopulateGuilds started");
+                Debug.WriteLine("PopulateGuilds started");
                 var guilds = await _discord.GetGuilds();
                 SimpleLogger.Log($"Got {guilds.Count} guilds");
+                Debug.WriteLine($"Got {guilds.Count} guilds");
 
                 listBoxGuilds.Items.Clear();
                 foreach (var g in guilds)
@@ -408,10 +441,12 @@ namespace WinCord
                     });
                 }
                 SimpleLogger.Log("PopulateGuilds completed");
+                Debug.WriteLine("PopulateGuilds completed");
             }
             catch (Exception ex)
             {
                 SimpleLogger.Log($"PopulateGuilds error: {ex.Message}");
+                Debug.WriteLine($"PopulateGuilds error: {ex.Message}");
                 MessageBox.Show($"Failed to load servers: {ex.Message}");
             }
         }
