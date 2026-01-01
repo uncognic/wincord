@@ -35,11 +35,10 @@ It supports Windows 7 to Windows 11, and unofficially Linux with Wine.
 
 # Screenshots
 <p float="left">
-  <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/login.png" width="200" />
+  <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/login.png" width="250" />
+ <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/prefs.png" width="300" />
 </p>
-<p float="left">
-  <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/prefs.png" width="200" />
-</p>
+
 
 <p float="left">
   <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/message.png" width="1000" />
