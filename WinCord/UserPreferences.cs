@@ -15,8 +15,7 @@ namespace WinCord
         public MessageStyle ChatStyle { get; set; } = MessageStyle.Spaced;
 
         private static readonly string PreferencesPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "WinCord",
+            AppDomain.CurrentDomain.BaseDirectory,
             "preferences.json"
         );
 
