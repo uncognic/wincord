@@ -56,13 +56,20 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.connectionStatusLabel = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.nameLabel = new System.Windows.Forms.Label();
+            this.statusLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.statusLabel);
+            this.panel1.Controls.Add(this.nameLabel);
+            this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.listBoxGuilds);
             this.panel1.Controls.Add(this.listBoxChannels);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
@@ -73,22 +80,24 @@
             // 
             // listBoxGuilds
             // 
-            this.listBoxGuilds.Dock = System.Windows.Forms.DockStyle.Left;
+            this.listBoxGuilds.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.listBoxGuilds.FormattingEnabled = true;
+            this.listBoxGuilds.ItemHeight = 15;
             this.listBoxGuilds.Location = new System.Drawing.Point(0, 0);
             this.listBoxGuilds.Name = "listBoxGuilds";
-            this.listBoxGuilds.Size = new System.Drawing.Size(150, 644);
+            this.listBoxGuilds.Size = new System.Drawing.Size(150, 559);
             this.listBoxGuilds.Sorted = true;
             this.listBoxGuilds.TabIndex = 1;
             this.listBoxGuilds.SelectedIndexChanged += new System.EventHandler(this.listBoxGuilds_SelectedIndexChanged);
             // 
             // listBoxChannels
             // 
-            this.listBoxChannels.Dock = System.Windows.Forms.DockStyle.Right;
+            this.listBoxChannels.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.listBoxChannels.FormattingEnabled = true;
-            this.listBoxChannels.Location = new System.Drawing.Point(155, 0);
+            this.listBoxChannels.ItemHeight = 15;
+            this.listBoxChannels.Location = new System.Drawing.Point(152, 0);
             this.listBoxChannels.Name = "listBoxChannels";
-            this.listBoxChannels.Size = new System.Drawing.Size(134, 644);
+            this.listBoxChannels.Size = new System.Drawing.Size(134, 559);
             this.listBoxChannels.Sorted = true;
             this.listBoxChannels.TabIndex = 0;
             this.listBoxChannels.SelectedIndexChanged += new System.EventHandler(this.listBoxChannels_SelectedIndexChanged_1);
@@ -106,9 +115,10 @@
             // textBox1
             // 
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.textBox1.Location = new System.Drawing.Point(0, 0);
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.textBox1.Location = new System.Drawing.Point(0, -1);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(878, 20);
+            this.textBox1.Size = new System.Drawing.Size(878, 21);
             this.textBox1.TabIndex = 0;
             this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
@@ -126,6 +136,7 @@
             // chatBox
             // 
             this.chatBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chatBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.chatBox.Location = new System.Drawing.Point(289, 25);
             this.chatBox.Name = "chatBox";
             this.chatBox.ReadOnly = true;
@@ -162,21 +173,21 @@
             // exportChatToolStripMenuItem
             // 
             this.exportChatToolStripMenuItem.Name = "exportChatToolStripMenuItem";
-            this.exportChatToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportChatToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.exportChatToolStripMenuItem.Text = "Export chat";
             this.exportChatToolStripMenuItem.Click += new System.EventHandler(this.exportChatToolStripMenuItem_Click);
             // 
             // logOutToolStripMenuItem
             // 
             this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
-            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.logOutToolStripMenuItem.Text = "Log out";
             this.logOutToolStripMenuItem.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
             // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -194,7 +205,7 @@
             // preferencesToolStripMenuItem
             // 
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
@@ -227,11 +238,42 @@
             // connectionStatusLabel
             // 
             this.connectionStatusLabel.AutoSize = true;
-            this.connectionStatusLabel.Location = new System.Drawing.Point(296, 654);
+            this.connectionStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.connectionStatusLabel.Location = new System.Drawing.Point(295, 650);
             this.connectionStatusLabel.Name = "connectionStatusLabel";
-            this.connectionStatusLabel.Size = new System.Drawing.Size(37, 13);
+            this.connectionStatusLabel.Size = new System.Drawing.Size(41, 15);
             this.connectionStatusLabel.TabIndex = 4;
             this.connectionStatusLabel.Text = "Status";
+            this.connectionStatusLabel.Click += new System.EventHandler(this.connectionStatusLabel_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(12, 569);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(70, 70);
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // nameLabel
+            // 
+            this.nameLabel.AutoSize = true;
+            this.nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nameLabel.Location = new System.Drawing.Point(89, 570);
+            this.nameLabel.Name = "nameLabel";
+            this.nameLabel.Size = new System.Drawing.Size(88, 20);
+            this.nameLabel.TabIndex = 3;
+            this.nameLabel.Text = "username";
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.AutoSize = true;
+            this.statusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.statusLabel.Location = new System.Drawing.Point(91, 590);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(39, 15);
+            this.statusLabel.TabIndex = 5;
+            this.statusLabel.Text = "status";
             // 
             // MainForm
             // 
@@ -248,10 +290,12 @@
             this.Text = "WinCord";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -277,6 +321,9 @@
         private System.Windows.Forms.ToolStripDropDownButton editMenu;
         private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportChatToolStripMenuItem;
+        private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.Label nameLabel;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

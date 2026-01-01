@@ -162,6 +162,42 @@ namespace WinCord
             public string id { get; set; }
             public string username { get; set; }
             public string discriminator { get; set; }
+            public string avatar { get; set; }
+        }
+        public async Task<System.Drawing.Image> GetUserAvatar(string userId, string avatarHash)
+        {
+            try
+            {
+                string avatarUrl;
+                
+                if (string.IsNullOrEmpty(avatarHash))
+                {
+                    Random random = new Random();
+                    int avatarIndex = random.Next(0, 6);
+                    avatarUrl = $"https://cdn.discordapp.com/embed/avatars/{avatarIndex}.png";
+                }
+                else
+                {
+                    string extension = avatarHash.StartsWith("a_") ? "gif" : "png";
+                    avatarUrl = $"https://cdn.discordapp.com/avatars/{userId}/{avatarHash}.{extension}?size=128";
+                }
+
+                var response = await _http.GetAsync(avatarUrl);
+                response.EnsureSuccessStatusCode();
+
+                var imageBytes = await response.Content.ReadAsByteArrayAsync();
+               
+                using (var ms = new System.IO.MemoryStream(imageBytes))
+                {
+                    var tempImage = System.Drawing.Image.FromStream(ms);
+                    return new System.Drawing.Bitmap(tempImage);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to load avatar: {ex.Message}");
+                return null;
+            }
         }
 
         public async Task<User> GetCurrentUser()

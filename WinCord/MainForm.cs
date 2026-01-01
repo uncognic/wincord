@@ -33,28 +33,28 @@ namespace WinCord
             {
                 SimpleLogger.Log("MainForm constructor started");
                 Debug.WriteLine("MainForm constructor started");
-                
+
                 SimpleLogger.Log("Calling InitializeComponent...");
                 Debug.WriteLine("Calling InitializeComponent...");
                 InitializeComponent();
                 SimpleLogger.Log("InitializeComponent completed");
                 Debug.WriteLine("InitializeComponent completed");
-                
+
                 SimpleLogger.Log("Loading preferences...");
                 Debug.WriteLine("Loading preferences...");
                 _preferences = UserPreferences.Load();
                 SimpleLogger.Log("Preferences loaded");
                 Debug.WriteLine("Preferences loaded");
-                
+
                 SimpleLogger.Log("Creating DiscordClient...");
                 Debug.WriteLine("Creating DiscordClient...");
                 _discord = new DiscordClient(token);
                 SimpleLogger.Log("DiscordClient created");
                 Debug.WriteLine("DiscordClient created");
-                
+
                 _token = token;
                 _currentChannelId = null;
-                
+
                 SimpleLogger.Log("MainForm constructor completed");
                 Debug.WriteLine("MainForm constructor completed");
             }
@@ -76,6 +76,7 @@ namespace WinCord
                 Debug.WriteLine("LoadUserInfo started");
                 var user = await _discord.GetCurrentUser();
                 SetTitle(user.username);
+                await UpdateUserProfile(user.username, user.id, user.avatar);
                 SimpleLogger.Log($"User info loaded: {user.username}");
                 Debug.WriteLine($"User info loaded: {user.username}");
             }
@@ -83,6 +84,73 @@ namespace WinCord
             {
                 SimpleLogger.Log($"Failed to load user info: {ex.Message}");
                 Debug.WriteLine($"Failed to load user info: {ex.Message}");
+            }
+        }
+
+        private async Task UpdateUserProfile(string username, string userId, string avatarHash)
+        {
+            nameLabel.Text = username;
+
+            try
+            {
+                SimpleLogger.Log($"Loading avatar for user {userId}, hash: {avatarHash ?? "null"}");
+                Debug.WriteLine($"Loading avatar for user {userId}, hash: {avatarHash ?? "null"}");
+                
+                var avatarImage = await _discord.GetUserAvatar(userId, avatarHash);
+                
+                if (avatarImage != null)
+                {
+                    SimpleLogger.Log("Avatar loaded successfully");
+                    Debug.WriteLine("Avatar loaded successfully");
+                    
+                    if (InvokeRequired)
+                    {
+                        BeginInvoke(new Action(() => 
+                        {
+                            pictureBox1.Image = avatarImage;
+                            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                        }));
+                    }
+                    else
+                    {
+                        pictureBox1.Image = avatarImage;
+                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                    }
+                }
+                else
+                {
+                    SimpleLogger.Log("Avatar is null, setting gray background");
+                    Debug.WriteLine("Avatar is null, setting gray background");
+                    
+                    if (InvokeRequired)
+                    {
+                        BeginInvoke(new Action(() => 
+                        {
+                            pictureBox1.Image = null;
+                            pictureBox1.BackColor = Color.Gray;
+                        }));
+                    }
+                    else
+                    {
+                        pictureBox1.Image = null;
+                        pictureBox1.BackColor = Color.Gray;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SimpleLogger.Log($"Failed to load avatar: {ex.Message}");
+                Debug.WriteLine($"Failed to load avatar: {ex.Message}");
+                Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+                
+                if (InvokeRequired)
+                {
+                    BeginInvoke(new Action(() => pictureBox1.BackColor = Color.Gray));
+                }
+                else
+                {
+                    pictureBox1.BackColor = Color.Gray;
+                }
             }
         }
 
@@ -190,7 +258,7 @@ namespace WinCord
                 Debug.WriteLine("StartWebSocket called");
                 UpdateConnectionStatus("Connecting...");
                 _ws = new WebSocket("wss://gateway.discord.gg/?v=9&encoding=json");
-                
+
                 SimpleLogger.Log("WebSocket object created");
                 Debug.WriteLine("WebSocket object created");
                 _ws.WaitTime = TimeSpan.FromSeconds(10);
@@ -200,7 +268,7 @@ namespace WinCord
                     SimpleLogger.Log("WebSocket OnOpen event triggered");
                     Debug.WriteLine("WebSocket OnOpen event triggered");
                     UpdateConnectionStatus("Connected");
-                    
+
                     var identify = new
                     {
                         op = 2,
@@ -212,11 +280,19 @@ namespace WinCord
                                 os = "windows",
                                 browser = "wincord",
                                 device = "wincord"
+                            },
+                            presence = new
+                            {
+                                status = "online",
+                                since = (int?)null,
+                                activities = new object[0],
+                                afk = false
                             }
                         }
                     };
                     var json = Newtonsoft.Json.JsonConvert.SerializeObject(identify);
                     _ws.Send(json);
+                    
                 };
 
                 _ws.OnMessage += (sender, e) =>
@@ -241,13 +317,15 @@ namespace WinCord
                             {
                                 var author = obj["d"]["author"]?["username"]?.ToString();
                                 var content = obj["d"]["content"]?.ToString();
-                                
+
                                 if (!string.IsNullOrEmpty(author) && content != null)
                                 {
                                     AddMessage(author, content);
                                 }
                             }
                         }
+                        
+                      
                     }
                     catch (Exception ex)
                     {
@@ -376,11 +454,11 @@ namespace WinCord
             {
                 SimpleLogger.Log("MainForm_Load event started");
                 Debug.WriteLine("MainForm_Load event started");
-                
+
                 _ = PopulateGuilds();
                 StartWebSocket(_token);
                 _ = LoadUserInfo();
-                
+
                 SimpleLogger.Log("MainForm_Load event completed");
                 Debug.WriteLine("MainForm_Load event completed");
             }
@@ -400,7 +478,7 @@ namespace WinCord
                 await LoadMessages(_currentChannelId);
             }
         }
-        
+
         private async Task LoadMessages(string channelId)
         {
             if (string.IsNullOrEmpty(channelId)) return;
@@ -409,7 +487,7 @@ namespace WinCord
 
             try
             {
-                var messages = await _discord.GetMessages(channelId, 50); 
+                var messages = await _discord.GetMessages(channelId, 50);
                 foreach (var msg in messages.AsEnumerable().Reverse())
                 {
                     AddMessage(msg.author.username, msg.content, msg.timestamp);
@@ -420,7 +498,7 @@ namespace WinCord
                 MessageBox.Show($"Failed to load messages: {ex.Message}");
             }
         }
-        
+
         private async Task PopulateGuilds()
         {
             try
@@ -454,7 +532,7 @@ namespace WinCord
         {
 
         }
-      
+
 
         private async void listBoxGuilds_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -465,7 +543,7 @@ namespace WinCord
                 chatBox.Clear();
             }
         }
-      
+
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -533,6 +611,16 @@ namespace WinCord
                     MessageBox.Show("Preferences saved. Changes will apply to new messages.", "Preferences", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
+        }
+
+        private void connectionStatusLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
