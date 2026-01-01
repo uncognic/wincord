@@ -44,6 +44,8 @@
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.LogOut = new System.Windows.Forms.ToolStripButton();
             this.exportButton = new System.Windows.Forms.ToolStripButton();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.connectionStatusLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -86,7 +88,7 @@
             this.panel2.Controls.Add(this.textBox1);
             this.panel2.Controls.Add(this.sendButton);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(289, 649);
+            this.panel2.Location = new System.Drawing.Point(289, 627);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(953, 20);
             this.panel2.TabIndex = 1;
@@ -117,7 +119,7 @@
             this.chatBox.Location = new System.Drawing.Point(289, 25);
             this.chatBox.Name = "chatBox";
             this.chatBox.ReadOnly = true;
-            this.chatBox.Size = new System.Drawing.Size(953, 624);
+            this.chatBox.Size = new System.Drawing.Size(953, 602);
             this.chatBox.TabIndex = 2;
             this.chatBox.Text = "";
             this.chatBox.TextChanged += new System.EventHandler(this.chatBox_TextChanged);
@@ -175,13 +177,32 @@
             this.exportButton.Text = "Export chat";
             this.exportButton.Click += new System.EventHandler(this.toolStripButton1_Click_1);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Location = new System.Drawing.Point(289, 647);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(953, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // connectionStatusLabel
+            // 
+            this.connectionStatusLabel.AutoSize = true;
+            this.connectionStatusLabel.Location = new System.Drawing.Point(296, 654);
+            this.connectionStatusLabel.Name = "connectionStatusLabel";
+            this.connectionStatusLabel.Size = new System.Drawing.Size(37, 13);
+            this.connectionStatusLabel.TabIndex = 4;
+            this.connectionStatusLabel.Text = "Status";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1242, 669);
+            this.Controls.Add(this.connectionStatusLabel);
             this.Controls.Add(this.chatBox);
             this.Controls.Add(this.panel2);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "MainForm";
@@ -211,6 +232,8 @@
         private System.Windows.Forms.ListBox listBoxGuilds;
         private System.Windows.Forms.ToolStripButton LogOut;
         private System.Windows.Forms.ToolStripButton exportButton;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.Label connectionStatusLabel;
     }
 }
 

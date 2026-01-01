@@ -45,6 +45,16 @@ namespace WinCord
             chatBox.SelectionStart = chatBox.Text.Length;
             chatBox.ScrollToCaret();
         }
+        private void UpdateConnectionStatus(string status)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(() => UpdateConnectionStatus(status)));
+                return;
+            }
+
+            connectionStatusLabel.Text = status;
+        }
         private async Task SendMessage()
         {
             string message = textBox1.Text.Trim();
@@ -68,95 +78,132 @@ namespace WinCord
             }
         }
 
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        private async void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-
-                _ = SendMessage();
+                try
+                {
+                    await SendMessage();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
-        private void sendButton_Click(object sender, EventArgs e)
+        private async void sendButton_Click(object sender, EventArgs e)
         {
-            _ = SendMessage();
+            try
+            {
+                await SendMessage();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         private int? _lastSequence = null;
         private async void StartWebSocket(string token)
         {
-            _ws = new ClientWebSocket();
-            await _ws.ConnectAsync(new Uri("wss://gateway.discord.gg/?v=9&encoding=json"), CancellationToken.None);
-
-            var identify = new
+            try
             {
-                op = 2,
-                d = new
+                UpdateConnectionStatus("Connecting...");
+                _ws = new ClientWebSocket();
+                await _ws.ConnectAsync(new Uri("wss://gateway.discord.gg/?v=9&encoding=json"), CancellationToken.None);
+                UpdateConnectionStatus("Connected");
+
+                var identify = new
                 {
-                    token = token,
-                    properties = new { 
-                        os = "windows", 
-                        browser = "wincord", 
-                        device = "wincord" 
+                    op = 2,
+                    d = new
+                    {
+                        token = token,
+                        properties = new
+                        {
+                            os = "windows",
+                            browser = "wincord",
+                            device = "wincord"
+                        }
                     }
-                }
-            };
-            var json = Newtonsoft.Json.JsonConvert.SerializeObject(identify);
-            var bytes = Encoding.UTF8.GetBytes(json);
-            await _ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
+                };
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(identify);
+                var bytes = Encoding.UTF8.GetBytes(json);
+                await _ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
 
-            _ = Task.Run(async () =>
-            {
-                var buffer = new ArraySegment<byte>(new byte[8192]);
-                var ms = new MemoryStream();
-                int heartbeatInterval = 0;
-
-                while (_ws.State == WebSocketState.Open)
+                _ = Task.Run(async () =>
                 {
-                    ms.SetLength(0);
-                    WebSocketReceiveResult result;
-                    
-                    do
-                    {
-                        result = await _ws.ReceiveAsync(buffer, CancellationToken.None);
-                        ms.Write(buffer.Array, buffer.Offset, result.Count);
-                    } while (!result.EndOfMessage);
+                    var buffer = new ArraySegment<byte>(new byte[8192]);
+                    var ms = new MemoryStream();
+                    int heartbeatInterval = 0;
 
-                    if (result.MessageType == WebSocketMessageType.Text)
+                    while (_ws.State == WebSocketState.Open)
                     {
-                        var msg = Encoding.UTF8.GetString(ms.ToArray());
                         try
                         {
-                            var obj = JObject.Parse(msg);
-            
-                            if (obj["s"] != null)
-                                _lastSequence = (int?)obj["s"];
+                            ms.SetLength(0);
+                            WebSocketReceiveResult result;
 
-                            if (obj["op"] != null && (int)obj["op"] == 10)
+                            do
                             {
-                                heartbeatInterval = (int)obj["d"]["heartbeat_interval"];
-                                _ = StartHeartbeat(heartbeatInterval);
-                            }
+                                result = await _ws.ReceiveAsync(buffer, CancellationToken.None);
+                                ms.Write(buffer.Array, buffer.Offset, result.Count);
+                            } while (!result.EndOfMessage);
 
-                            if (obj["t"] != null && obj["t"].ToString() == "MESSAGE_CREATE")
+                            if (result.MessageType == WebSocketMessageType.Text)
                             {
-                                var channelId = obj["d"]["channel_id"].ToString();
-                                if (channelId == _currentChannelId)
+                                var msg = Encoding.UTF8.GetString(ms.ToArray());
+                                try
                                 {
-                                    var author = obj["d"]["author"]["username"].ToString();
-                                    var content = obj["d"]["content"].ToString();
-                                    AddMessage(author, content);
+                                    var obj = JObject.Parse(msg);
+
+                                    if (obj["s"] != null)
+                                        _lastSequence = (int?)obj["s"];
+
+                                    if (obj["op"] != null && (int)obj["op"] == 10)
+                                    {
+                                        heartbeatInterval = (int)obj["d"]["heartbeat_interval"];
+                                        _ = StartHeartbeat(heartbeatInterval);
+                                    }
+
+                                    if (obj["t"] != null && obj["t"].ToString() == "MESSAGE_CREATE")
+                                    {
+                                        var channelId = obj["d"]["channel_id"].ToString();
+                                        if (channelId == _currentChannelId)
+                                        {
+                                            var author = obj["d"]["author"]["username"].ToString();
+                                            var content = obj["d"]["content"].ToString();
+                                            AddMessage(author, content);
+                                        }
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Debug.WriteLine($"JSON parse error: {ex.Message}");
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            Debug.WriteLine(ex);
+                            Debug.WriteLine($"WebSocket receive error: {ex.Message}");
+                            UpdateConnectionStatus("Disconnected");
+                            break;
                         }
                     }
-                }
-            });
+
+                    UpdateConnectionStatus("Disconnected");
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"WebSocket connection error: {ex.Message}");
+                UpdateConnectionStatus($"Connection failed: {ex.Message}");
+                MessageBox.Show($"Failed to connect to Discord: {ex.Message}", "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
         private async Task StartHeartbeat(int interval)
         {
             while (_ws.State == WebSocketState.Open)
@@ -169,7 +216,12 @@ namespace WinCord
                 {
                     await _ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
                 }
-                catch {}
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Heartbeat error: {ex.Message}");
+                    UpdateConnectionStatus("Connection lost");
+                    break;
+                }
 
                 await Task.Delay(interval);
             }
@@ -264,19 +316,7 @@ namespace WinCord
                 about.ShowDialog(this);
             }
         }
-        private void SetTitle(string username)
-        {
-            if (!IsHandleCreated)
-            {
-                this.HandleCreated += (_, __) => SetTitle(username);
-                return;
-            }
-
-            BeginInvoke(new Action(() =>
-            {
-                this.Text = $"WinCord — {username}";
-            }));
-        }
+       
 
         private async void listBoxGuilds_SelectedIndexChanged(object sender, EventArgs e)
         {
