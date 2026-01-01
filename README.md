@@ -1,3 +1,4 @@
+# SEE DISCLAIMER.MD FIRST!
 ```
 __        ___        ____              _
 \ \      / (_)_ __  / ___|___  _ __ __| |
@@ -22,13 +23,13 @@ It supports Windows 7 to Windows 11, and unofficially Linux with Wine.\
 - List servers and allow switching between them
 - Securely save token in Windows Credential Manager and auto login
 - Export current chat log
+- Typing indicator
 ### Planned features
 - Direct messages
 - Slowmode support (you can still chat in slowmodded channels, your messages just won't send if you send too fast)
 - Mentions (@username) highlighting
 - Message editing / deletion
 - Attachments / images / embeds
-- Typing indicators
 - Presence (online/offline status)
 - Reactions to messages
 - Rich text / markdown formatting
@@ -42,6 +43,9 @@ It supports Windows 7 to Windows 11, and unofficially Linux with Wine.\
 
 <p float="left">
   <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/message.png" width="1000" />
+</p>
+<p float="left">
+  <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/messagedark.png" width="1000" />
 </p>
 <p float="left">
   <img src="https://raw.githubusercontent.com/uncognic/wincord/refs/heads/main/screenshots/w7.png" width="1000" />

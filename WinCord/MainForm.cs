@@ -26,6 +26,9 @@ namespace WinCord
         private int? _lastSequence = null;
         private CancellationTokenSource _heartbeatCts;
         private UserPreferences _preferences;
+        private System.Windows.Forms.Timer _typingTimer;
+        private DateTime _lastTypingTrigger = DateTime.MinValue;
+        private const int TYPING_COOLDOWN_MS = 8000; 
 
         public MainForm(string token)
         {
@@ -56,6 +59,10 @@ namespace WinCord
 
                 _token = token;
                 _currentChannelId = null;
+
+                _typingTimer = new System.Windows.Forms.Timer();
+                _typingTimer.Interval = 3000;
+                _typingTimer.Tick += TypingTimer_Tick;
 
                 SimpleLogger.Log("MainForm constructor completed");
                 Debug.WriteLine("MainForm constructor completed");
@@ -643,6 +650,37 @@ namespace WinCord
         {
             var theme = _preferences.UseDarkMode ? ThemeManager.Theme.Dark : ThemeManager.Theme.Light;
             ThemeManager.ApplyTheme(this, theme);
+        }
+
+        private void TypingTimer_Tick(object sender, EventArgs e)
+        {
+            _typingTimer.Stop();
+        }
+
+        private async void textBox1_TextChanged_1(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(_currentChannelId))
+                return;
+
+            if (string.IsNullOrWhiteSpace(textBox1.Text))
+                return;
+
+            var now = DateTime.Now;
+            if ((now - _lastTypingTrigger).TotalMilliseconds < TYPING_COOLDOWN_MS)
+                return;
+
+            _lastTypingTrigger = now;
+
+            try
+            {
+                await _discord.TriggerTypingIndicator(_currentChannelId);
+                _typingTimer.Stop();
+                _typingTimer.Start();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to trigger typing: {ex.Message}");
+            }
         }
     }
 }

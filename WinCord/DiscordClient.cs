@@ -73,6 +73,42 @@ namespace WinCord
                 throw new InvalidOperationException($"Network error: {ex.Message}", ex);
             }
         }
+
+        public async Task TriggerTypingIndicator(string channelId)
+        {
+            try
+            {
+                var response = await _http.PostAsync(
+                    $"https://discord.com/api/v9/channels/{channelId}/typing",
+                    null
+                );
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    System.Diagnostics.Debug.WriteLine("Typing indicator: Unauthorized");
+                    return;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    System.Diagnostics.Debug.WriteLine("Typing indicator: Forbidden");
+                    return;
+                }
+
+                response.EnsureSuccessStatusCode();
+            }
+            catch (TaskCanceledException)
+            {
+                System.Diagnostics.Debug.WriteLine("Typing indicator: Request timed out");
+            }
+            catch (HttpRequestException ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Typing indicator: Network error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Typing indicator: Error: {ex.Message}");
+            }
+        }
       
 
         public async Task<List<Channel>> GetChannels(string guildId)
