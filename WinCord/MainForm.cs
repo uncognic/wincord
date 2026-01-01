@@ -29,7 +29,31 @@ namespace WinCord
             _discord = new DiscordClient(token);
             _currentChannelId = null;
             StartWebSocket(token);
+            _ = LoadUserInfo();
+        }
 
+        private async Task LoadUserInfo()
+        {
+            try
+            {
+                var user = await _discord.GetCurrentUser();
+                SetTitle(user.username);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Failed to load user info: {ex.Message}");
+            }
+        }
+
+        private void SetTitle(string username)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(() => SetTitle(username)));
+                return;
+            }
+
+            this.Text = $"WinCord - {username}";
         }
 
         private void AddMessage(string author, string content, DateTime? timestamp = null)
@@ -40,7 +64,7 @@ namespace WinCord
                 return;
             }
             
-            string time = (timestamp ?? DateTime.Now).ToString("yyyy-MM-dd HH:mm");
+            string time = (timestamp ?? DateTime.Now).ToString("yyyy-MM-dd HH:mm:ss");
             chatBox.AppendText($"[{time}] {author}: {content}\n");
             chatBox.SelectionStart = chatBox.Text.Length;
             chatBox.ScrollToCaret();

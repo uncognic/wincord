@@ -90,5 +90,19 @@ namespace WinCord
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Guild>>(json);
         }
+        public class User
+        {
+            public string id { get; set; }
+            public string username { get; set; }
+            public string discriminator { get; set; }
+        }
+
+        public async Task<User> GetCurrentUser()
+        {
+            var response = await _http.GetAsync("https://discord.com/api/v9/users/@me");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<User>(json);
+        }
     }
 }
